@@ -19,14 +19,14 @@ var housingAcrebyID = d3.map(); // housing units per acre
 
 
 var quantize = d3.scale.quantize()
-	.domain([0, 8000])
+	.domain([0, 9000])
 	.range(d3.range(9).map(function(i) { return "q"+i+"-9"; }));
 
 
 queue() // upload data using queue 
-	.defer(d3.json, "tracts_2010.geojson")
+	.defer(d3.json, "tracts_2010.geojson") // cambridge GIS data
 	.defer(d3.csv, "camb_tract_pop_2010.csv", function(d) { 
-		rateById.set(d.id, +d.population);
+		rateById.set(d.id, +d.population); // cambridge CDD data
 		popAcrebyID.set(d.id, + d.population_per_acre);
 		housingAcrebyID.set(d.id, + d.housing_units_per_acre);
 	})
@@ -45,6 +45,35 @@ function onEachFeature(feature, layer) {
 		mouseout: resetHighlight
 	})
 }
+
+
+// legend !
+var legend = L.control({position: 'bottomright'});
+
+legend.onAdd = function(map) {
+
+	var div = L.DomUtil.create('div', 'info legend'),
+		grades = [0, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000],
+		labels = [],
+		from, to;
+
+	labels.push("Total Population");
+
+	for(var i = 0; i < grades.length; i++) {
+		from = grades[i];
+		to = grades[i + 1];
+
+		labels.push(
+					'<i style="background:' + getColor("q"+i+"-9") + '"></i> ' +
+					from + (to ? ' &ndash; ' + to : '+'));
+	}
+
+	div.innerHTML = labels.join('<br>');
+	return div;
+
+}
+
+legend.addTo(map);
 
 
 function highlightFeature(e) {
@@ -70,7 +99,7 @@ function highlightFeature(e) {
 	var housing_per_acre = housingAcrebyID.get(tract);
 
 	// tooltip.text("Census tract " + tract);
-	tooltip.style("left", x-80+"px");
+	tooltip.style("left", x-75+"px");
 	tooltip.style("top", y+40+"px");
 
 	tooltip.html(function(d) {
