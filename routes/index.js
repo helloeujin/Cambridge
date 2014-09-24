@@ -16,13 +16,14 @@ var astronautModel = require("../models/astronaut.js"); //db model
 */
 exports.main = function(req, res) {
 	console.log("main page requested");
-	res.render('main.html');
-}
-
-exports.cambridge = function(req, res) {
-	console.log("cambridge map page requested");
+	// res.render('main.html');
 	res.render('cambridge.html');
 }
+
+// exports.cambridge = function(req, res) {
+// 	console.log("cambridge map page requested");
+// 	res.render('cambridge.html');
+// }
 
 // exports.index = function(req, res) {
 	

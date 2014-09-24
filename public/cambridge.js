@@ -33,7 +33,7 @@ queue() // upload data using queue
 var tooltip = d3.select("body")
 	.append("div")
 	.attr("id", "tooltip");
-	
+
 
 function onEachFeature(feature, layer) {
 	layer.on({
@@ -46,6 +46,11 @@ function onEachFeature(feature, layer) {
 function highlightFeature(e) {
 	var layer = e.target;
 
+	// mouse position
+	var x = e.containerPoint.x;
+	var y = e.containerPoint.y;
+    // console.log(x + "," + y);
+
 	layer.setStyle({
 		weight: 1.4,
 		color: "rgba(0,0,0,1)"
@@ -54,6 +59,24 @@ function highlightFeature(e) {
 	if(!L.Browser.ie && !L.Browser.opera) {
 		layer.bringToFront();
 	} // draw line above other features
+
+	var tract = layer.feature.properties.NAME10;
+	var population = rateById.get( layer.feature.properties.NAME10 );
+
+	// tooltip.text("Census tract " + tract);
+	tooltip.style("left", x-70+"px");
+	tooltip.style("top", y+40+"px");
+
+	tooltip.html(function(d) {
+		return "<span style='font-weight:bold;font-size:13px'>Tract " 
+				+ tract +"</span><br>"
+			+ "<span style='font-style:italic; color:grey;'>" 
+				+ "Total population "+ population 
+			+"</span>";
+	});
+
+	// tooltip.text("total population");
+	tooltip.style("visibility", "visible");
 
 	// info.update(layer.feature.properties);
 }
@@ -65,6 +88,7 @@ function resetHighlight(e) {
 	layer.setStyle({
 		weight: 0
 	});
+	tooltip.style("visibility", "hidden");
 }
  
 
