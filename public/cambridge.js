@@ -4,18 +4,22 @@ var map = L.map('map').setView([42.3783903,-71.1129096], 13);
 
 L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
 	maxZoom: 18,
-	// id: 'examples.map-20v6611k' // light grey !
+	id: 'examples.map-20v6611k' // light grey !
 	// id: 'examples.map-0l53fhk2' // dark grey & brown
-	id: 'examples.map-8ced9urs' // black & white !
+	// id: 'examples.map-8ced9urs' // black & white !
 	// id: 'examples.map-i875kd35' // blue & yellow like google map
 	// id: 'examples.map-zr0njcqy' // blue & yellow like google map
 }).addTo(map);
 
+
+// populcation data
 var rateById = d3.map();
+
 
 var quantize = d3.scale.quantize()
 	.domain([0, 8000])
 	.range(d3.range(9).map(function(i) { return "q"+i+"-9"; }));
+
 
 queue() // upload data using queue 
 	.defer(d3.json, "tracts_2010.geojson")
@@ -24,30 +28,66 @@ queue() // upload data using queue
 	})
 	.await(ready);
 
+
+// tooltip !
+var tooltip = d3.select("body")
+	.append("div")
+	.attr("id", "tooltip");
+	
+
+function onEachFeature(feature, layer) {
+	layer.on({
+		mouseover: highlightFeature,
+		mouseout: resetHighlight
+	})
+}
+
+
+function highlightFeature(e) {
+	var layer = e.target;
+
+	layer.setStyle({
+		weight: 1.4,
+		color: "rgba(0,0,0,1)"
+	});
+
+	if(!L.Browser.ie && !L.Browser.opera) {
+		layer.bringToFront();
+	} // draw line above other features
+
+	// info.update(layer.feature.properties);
+}
+
+
+function resetHighlight(e) {
+	var layer = e.target;
+
+	layer.setStyle({
+		weight: 0
+	});
+}
+ 
+
 function ready(error, tract) {
 	console.log("tract geographic data uploaded");
 	// console.log(tract);
 
 	L.geoJson(tract, {
 		style: function(feature) {
-			// console.log(feature.properties.NAME10);
 			var c = getColor( quantize(rateById.get(feature.properties.NAME10)) );
-
-			// console.log(c);
 
 			return {
 				color: "rgb(0,0,255)",
-				weight: 1.5,
+				weight: 0,
 				fillColor: c,
-				fillOpacity: 0.35
+				fillOpacity: 0.75
 			};
-			// switch (feature.properties.party) {
-			// 	case 'Republican': return {color: "#ff0000"};
-			// 	case 'Democrat':   return {color: "#0000ff"};
-			// }
-		}
+		},
+
+		onEachFeature: onEachFeature
 	}).addTo(map);
 }
+
 
 function getColor(d) {
 	switch(d) {
@@ -62,3 +102,4 @@ function getColor(d) {
 		case 'q8-9': return "rgb(8,48,107)";
 	}
 }
+
