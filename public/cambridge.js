@@ -146,7 +146,7 @@ function ready(error, tract) {
 				color: c,
 				weight: 1.3,
 				fillColor: c,
-				fillOpacity: 0.8
+				fillOpacity: 0.84
 			};
 		},
 
