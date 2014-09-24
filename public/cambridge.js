@@ -14,6 +14,8 @@ L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
 
 // populcation data
 var rateById = d3.map();
+var popAcrebyID = d3.map(); // population per acre
+var housingAcrebyID = d3.map(); // housing units per acre
 
 
 var quantize = d3.scale.quantize()
@@ -25,6 +27,8 @@ queue() // upload data using queue
 	.defer(d3.json, "tracts_2010.geojson")
 	.defer(d3.csv, "camb_tract_pop_2010.csv", function(d) { 
 		rateById.set(d.id, +d.population);
+		popAcrebyID.set(d.id, + d.population_per_acre);
+		housingAcrebyID.set(d.id, + d.housing_units_per_acre);
 	})
 	.await(ready);
 
@@ -52,7 +56,7 @@ function highlightFeature(e) {
     // console.log(x + "," + y);
 
 	layer.setStyle({
-		weight: 1.4,
+		weight: 1.5,
 		color: "rgba(0,0,0,1)"
 	});
 
@@ -61,18 +65,23 @@ function highlightFeature(e) {
 	} // draw line above other features
 
 	var tract = layer.feature.properties.NAME10;
-	var population = rateById.get( layer.feature.properties.NAME10 );
+	var population = rateById.get(tract);
+	var pop_per_acre = popAcrebyID.get(tract);
+	var housing_per_acre = housingAcrebyID.get(tract);
 
 	// tooltip.text("Census tract " + tract);
-	tooltip.style("left", x-70+"px");
+	tooltip.style("left", x-80+"px");
 	tooltip.style("top", y+40+"px");
 
 	tooltip.html(function(d) {
-		return "<span style='font-weight:bold;font-size:13px'>Tract " 
+		return "<span style='font-weight:bold;font-size:14px'>Tract " 
 				+ tract +"</span><br>"
 			+ "<span style='font-style:italic; color:grey;'>" 
 				+ "Total population "+ population 
-			+"</span>";
+			+"</span><br>"
+				+"Population per acre: " + pop_per_acre
+				+"<br>Housing units per acre: " + housing_per_acre
+			;
 	});
 
 	// tooltip.text("total population");
@@ -84,9 +93,12 @@ function highlightFeature(e) {
 
 function resetHighlight(e) {
 	var layer = e.target;
+	var tract = layer.feature.properties.NAME10;
+	var c = getColor( quantize(rateById.get(tract)) );
 
 	layer.setStyle({
-		weight: 0
+		weight: 1.3,
+		color: c
 	});
 	tooltip.style("visibility", "hidden");
 }
@@ -98,13 +110,14 @@ function ready(error, tract) {
 
 	L.geoJson(tract, {
 		style: function(feature) {
-			var c = getColor( quantize(rateById.get(feature.properties.NAME10)) );
+			var tract = feature.properties.NAME10;
+			var c = getColor( quantize( rateById.get(tract) ) );
 
 			return {
-				color: "rgb(0,0,255)",
-				weight: 0,
+				color: c,
+				weight: 1.3,
 				fillColor: c,
-				fillOpacity: 0.75
+				fillOpacity: 0.8
 			};
 		},
 
