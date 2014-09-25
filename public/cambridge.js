@@ -11,6 +11,7 @@
 // 	// id: 'examples.map-zr0njcqy' // blue & yellow like google map
 // }).addTo(map);
 
+
 var population = new L.LayerGroup(); // population layer
 
 // populcation data
@@ -47,12 +48,11 @@ function onEachFeature(feature, layer) {
 	})
 }
 
+
 // legend !
 var legend = L.control({position: 'bottomright'});
-// var legend = L.control();
 
 legend.onAdd = function(map) {
-
 	var div = L.DomUtil.create('div', 'info legend'),
 		grades = [0, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000],
 		labels = [],
@@ -71,11 +71,7 @@ legend.onAdd = function(map) {
 
 	div.innerHTML = labels.join('<br>');
 	return div;
-
 }
-
-// legend.addTo(map);
-// legend.addTo(population);
 
 
 function highlightFeature(e) {
@@ -100,7 +96,6 @@ function highlightFeature(e) {
 	var pop_per_acre = popAcrebyID.get(tract);
 	var housing_per_acre = housingAcrebyID.get(tract);
 
-	// tooltip.text("Census tract " + tract);
 	tooltip.style("left", x-70+"px");
 	tooltip.style("top", y+40+"px");
 
@@ -115,10 +110,7 @@ function highlightFeature(e) {
 			;
 	});
 
-	// tooltip.text("total population");
 	tooltip.style("visibility", "visible");
-
-	// info.update(layer.feature.properties);
 }
 
 
@@ -137,8 +129,6 @@ function resetHighlight(e) {
 
 function ready(error, tract) {
 	console.log("tract geographic data uploaded");
-	// console.log(tract);
-	// console.log(map.hasLayer(population));
 
 	L.geoJson(tract, {
 		style: function(feature) {
@@ -154,7 +144,6 @@ function ready(error, tract) {
 		},
 
 		onEachFeature: onEachFeature
-	// }).addTo(map);
 	}).addTo(population);
 }
 
@@ -182,7 +171,8 @@ var overlays = {
 	"Population": population
 };
 
-L.control.layers(baseLayers, overlays).addTo(map);
+L.control.layers(baseLayers, overlays, {collapsed:false}).addTo(map);
+
 
 // legend control depend on overlay selection
 map.on('overlayadd', function (eventLayer) {
