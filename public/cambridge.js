@@ -1,16 +1,17 @@
 // Cambridge
 
-var map = L.map('map').setView([42.3783903,-71.1129096], 13);
+// var map = L.map('map').setView([42.3783903,-71.1129096], 13);
 
-L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
-	maxZoom: 18,
-	id: 'examples.map-20v6611k' // light grey !
-	// id: 'examples.map-0l53fhk2' // dark grey & brown
-	// id: 'examples.map-8ced9urs' // black & white !
-	// id: 'examples.map-i875kd35' // blue & yellow like google map
-	// id: 'examples.map-zr0njcqy' // blue & yellow like google map
-}).addTo(map);
+// L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
+// 	maxZoom: 18,
+// 	id: 'examples.map-20v6611k' // light grey !
+// 	// id: 'examples.map-0l53fhk2' // dark grey & brown
+// 	// id: 'examples.map-8ced9urs' // black & white !
+// 	// id: 'examples.map-i875kd35' // blue & yellow like google map
+// 	// id: 'examples.map-zr0njcqy' // blue & yellow like google map
+// }).addTo(map);
 
+var population = new L.LayerGroup(); // population layer
 
 // populcation data
 var rateById = d3.map();
@@ -46,9 +47,9 @@ function onEachFeature(feature, layer) {
 	})
 }
 
-
 // legend !
 var legend = L.control({position: 'bottomright'});
+// var legend = L.control();
 
 legend.onAdd = function(map) {
 
@@ -57,7 +58,7 @@ legend.onAdd = function(map) {
 		labels = [],
 		from, to;
 
-	labels.push("Total Population");
+	labels.push("2010 Population");
 
 	for(var i = 0; i < grades.length; i++) {
 		from = grades[i];
@@ -73,7 +74,8 @@ legend.onAdd = function(map) {
 
 }
 
-legend.addTo(map);
+// legend.addTo(map);
+// legend.addTo(population);
 
 
 function highlightFeature(e) {
@@ -94,19 +96,19 @@ function highlightFeature(e) {
 	} // draw line above other features
 
 	var tract = layer.feature.properties.NAME10;
-	var population = rateById.get(tract);
+	var pop = rateById.get(tract);
 	var pop_per_acre = popAcrebyID.get(tract);
 	var housing_per_acre = housingAcrebyID.get(tract);
 
 	// tooltip.text("Census tract " + tract);
-	tooltip.style("left", x-75+"px");
+	tooltip.style("left", x-70+"px");
 	tooltip.style("top", y+40+"px");
 
 	tooltip.html(function(d) {
 		return "<span style='font-weight:bold;font-size:14px'>Tract " 
 				+ tract +"</span><br>"
 			+ "<span style='font-style:italic; color:grey;'>" 
-				+ "Total population "+ population 
+				+ "Total population "+ pop 
 			+"</span><br>"
 				+"Population per acre: " + pop_per_acre
 				+"<br>Housing units per acre: " + housing_per_acre
@@ -136,6 +138,7 @@ function resetHighlight(e) {
 function ready(error, tract) {
 	console.log("tract geographic data uploaded");
 	// console.log(tract);
+	// console.log(map.hasLayer(population));
 
 	L.geoJson(tract, {
 		style: function(feature) {
@@ -151,10 +154,51 @@ function ready(error, tract) {
 		},
 
 		onEachFeature: onEachFeature
-	}).addTo(map);
+	// }).addTo(map);
+	}).addTo(population);
 }
 
 
+//  maps
+var mbUrl = 'https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png';
+
+var grayscale   = L.tileLayer(mbUrl, {id: 'examples.map-20v6611k'}),
+	streets  = L.tileLayer(mbUrl, {id: 'examples.map-i875mjb7'});
+
+var map = L.map('map', {
+	center: [42.3783903,-71.1129096],
+	zoom: 13,
+	layers: grayscale
+});
+
+
+// layers
+var baseLayers = {
+	"Grayscale": grayscale,
+	"Streets": streets
+};
+
+var overlays = {
+	"Population": population
+};
+
+L.control.layers(baseLayers, overlays).addTo(map);
+
+// legend control depend on overlay selection
+map.on('overlayadd', function (eventLayer) {
+    if (eventLayer.name === 'Population') {
+        legend.addTo(this);
+    }
+});
+
+map.on('overlayremove', function (eventLayer) {
+	if (eventLayer.name === 'Population') {
+		this.removeControl(legend);
+	}
+});
+
+
+////////
 function getColor(d) {
 	switch(d) {
 		case 'q0-9': return "rgb(247,251,255)";
