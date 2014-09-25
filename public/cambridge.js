@@ -157,7 +157,7 @@ var grayscale   = L.tileLayer(mbUrl, {id: 'examples.map-20v6611k'}),
 var map = L.map('map', {
 	center: [42.3783903,-71.1129096],
 	zoom: 13,
-	layers: grayscale
+	layers: [grayscale, population]
 });
 
 
@@ -172,11 +172,12 @@ var overlays = {
 };
 
 L.control.layers(baseLayers, overlays, {collapsed:false}).addTo(map);
-
+legend.addTo(map);
 
 // legend control depend on overlay selection
 map.on('overlayadd', function (eventLayer) {
     if (eventLayer.name === 'Population') {
+    	// console.log(this);
         legend.addTo(this);
     }
 });
