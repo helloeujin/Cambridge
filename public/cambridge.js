@@ -13,6 +13,7 @@
 
 
 var population = new L.LayerGroup(); // population layer
+var sewer = new L.LayerGroup();
 
 // populcation data
 var rateById = d3.map();
@@ -26,7 +27,8 @@ var quantize = d3.scale.quantize()
 
 
 queue() // upload data using queue 
-	.defer(d3.json, "tracts_2010.geojson") // cambridge GIS data
+	.defer(d3.json, "tracts_2010.geojson") // cambridge geo data
+	.defer(d3.json, "infra_drainage.geojson")// cambridge drainage data
 	.defer(d3.csv, "camb_tract_pop_2010.csv", function(d) { 
 		rateById.set(d.id, +d.population); // cambridge CDD data
 		popAcrebyID.set(d.id, + d.population_per_acre);
@@ -87,9 +89,9 @@ function highlightFeature(e) {
 		color: "rgba(0,0,0,1)"
 	});
 
-	if(!L.Browser.ie && !L.Browser.opera) {
-		layer.bringToFront();
-	} // draw line above other features
+	// if(!L.Browser.ie && !L.Browser.opera) {
+	// 	layer.bringToFront();
+	// } // draw line above other features
 
 	var tract = layer.feature.properties.NAME10;
 	var pop = rateById.get(tract);
@@ -127,7 +129,7 @@ function resetHighlight(e) {
 }
  
 
-function ready(error, tract) {
+function ready(error, tract, drainage) {
 	console.log("tract geographic data uploaded");
 
 	L.geoJson(tract, {
@@ -145,6 +147,18 @@ function ready(error, tract) {
 
 		onEachFeature: onEachFeature
 	}).addTo(population);
+
+	L.geoJson(drainage, {
+		style: function(feature) {
+
+			return {
+				color: "rgba(255,0,0,1)",
+				weight: 4,
+				// fillOpacity: 1,
+				opacity: 1
+			};
+		}
+	}).addTo(sewer);
 }
 
 
@@ -168,7 +182,8 @@ var baseLayers = {
 };
 
 var overlays = {
-	"Population": population
+	"Sewage network": sewer,
+	"Total population": population
 };
 
 L.control.layers(baseLayers, overlays, {collapsed:false}).addTo(map);
