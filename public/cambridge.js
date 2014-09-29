@@ -12,17 +12,25 @@
 // }).addTo(map);
 
 
-var population = new L.LayerGroup(); // population layer
+var total_population = new L.LayerGroup(); // population layer
+var age_population = new L.LayerGroup();
 var sewer = new L.LayerGroup();
 
-// populcation data
+// total populcation data
 var rateById = d3.map();
 var popAcrebyID = d3.map(); // population per acre
 var housingAcrebyID = d3.map(); // housing units per acre
 
+// age population data
+var under_18 = d3.map();
+
 
 var quantize = d3.scale.quantize()
 	.domain([0, 9000])
+	.range(d3.range(9).map(function(i) { return "q"+i+"-9"; }));
+
+var quantize_age = d3.scale.quantize()
+	.domain([0, 1400])
 	.range(d3.range(9).map(function(i) { return "q"+i+"-9"; }));
 
 
@@ -34,7 +42,12 @@ queue() // upload data using queue
 		popAcrebyID.set(d.id, + d.population_per_acre);
 		housingAcrebyID.set(d.id, + d.housing_units_per_acre);
 	})
+	.defer(d3.csv, "camb_tract_age_2010.csv", function(d) {
+		under_18.set(d.id, +d.under_18);
+		console.log(d.under_18);
+	})
 	.await(ready);
+	
 
 
 // tooltip !
@@ -86,11 +99,12 @@ function highlightFeature(e) {
 
 	layer.setStyle({
 		weight: 1.5,
-		color: "rgba(0,0,0,1)"
+		color: "rgba(0,0,0,1)",
+		fillOpacity: 0.82
 	});
 
 	// if(!L.Browser.ie && !L.Browser.opera) {
-	// 	layer.bringToFront();
+		layer.bringToFront();
 	// } // draw line above other features
 
 	var tract = layer.feature.properties.NAME10;
@@ -123,8 +137,12 @@ function resetHighlight(e) {
 
 	layer.setStyle({
 		weight: 1.3,
-		color: c
+		color: c,
+		fillOpacity: 0.86
 	});
+
+	layer.bringToBack();
+
 	tooltip.style("visibility", "hidden");
 }
  
@@ -132,6 +150,7 @@ function resetHighlight(e) {
 function ready(error, tract, drainage) {
 	console.log("tract geographic data uploaded");
 
+	//  total population
 	L.geoJson(tract, {
 		style: function(feature) {
 			var tract = feature.properties.NAME10;
@@ -141,19 +160,41 @@ function ready(error, tract, drainage) {
 				color: c,
 				weight: 1.3,
 				fillColor: c,
-				fillOpacity: 0.84
+				fillOpacity: 0.86
 			};
 		},
 
 		onEachFeature: onEachFeature
-	}).addTo(population);
+	}).addTo(total_population);
 
+	// age population
+	L.geoJson(tract, {
+		style: function(feature) {
+
+
+			var tract = feature.properties.NAME10;
+
+			var c = getColor( quantize_age( under_18.get(tract) ) );
+			console.log( under_18.get(tract) );
+
+			return {
+				color: c,
+				weight: 1.3,
+				fillColor: c,
+				fillOpacity: 0.86
+			};
+		},
+
+		// onEachFeature: onEachFeature
+	}).addTo(age_population);
+
+	// drainage 
 	L.geoJson(drainage, {
 		style: function(feature) {
 
 			return {
-				color: "rgba(255,0,0,1)",
-				weight: 4,
+				color: "rgba(255,20,20,1)",
+				weight: 3,
 				// fillOpacity: 1,
 				opacity: 1
 			};
@@ -171,7 +212,7 @@ var grayscale   = L.tileLayer(mbUrl, {id: 'examples.map-20v6611k'}),
 var map = L.map('map', {
 	center: [42.3783903,-71.1129096],
 	zoom: 13,
-	layers: [grayscale, population]
+	layers: [grayscale, total_population]
 });
 
 
@@ -183,7 +224,8 @@ var baseLayers = {
 
 var overlays = {
 	"Sewage network": sewer,
-	"Total population": population
+	"Total population": total_population,
+	"Population by age": age_population
 };
 
 L.control.layers(baseLayers, overlays, {collapsed:false}).addTo(map);
@@ -191,14 +233,14 @@ legend.addTo(map);
 
 // legend control depend on overlay selection
 map.on('overlayadd', function (eventLayer) {
-    if (eventLayer.name === 'Population') {
+    if (eventLayer.name === 'Total population') {
     	// console.log(this);
         legend.addTo(this);
     }
 });
 
 map.on('overlayremove', function (eventLayer) {
-	if (eventLayer.name === 'Population') {
+	if (eventLayer.name === 'Total population') {
 		this.removeControl(legend);
 	}
 });
