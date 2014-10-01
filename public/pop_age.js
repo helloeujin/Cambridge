@@ -1,13 +1,13 @@
-var margin = {top: 120, right: 5, bottom: 10, left: 5},
+var margin = {top: 127, right: 5, bottom: 10, left: 5},
     width = 150 - margin.left - margin.right,
     height = 750 - margin.top - margin.bottom;
 
 var x = d3.scale.linear()
-    .domain([0, 1400])
+    .domain([0, 1500])
     .range([0, width]);
 
 var tx = d3.scale.linear()
-    .domain([1400, 0])
+    .domain([1500, 0])
     .range([0, width]);
 
 var svg_left = d3.select("#viz_left").append("svg")
@@ -25,10 +25,12 @@ var svg_right = d3.select("#viz_right").append("svg")
 
 var xAxis_left = d3.svg.axis()
     .scale(tx)
+    .ticks(2)
     .orient("bottom");
 
 var xAxis_right = d3.svg.axis()
     .scale(x)
+    .ticks(2)
     .orient("bottom");
 
 var des_age = d3.select("body")

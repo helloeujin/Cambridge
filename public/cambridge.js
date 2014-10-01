@@ -200,6 +200,7 @@ map.on('overlayadd', function (eventLayer) {
         legend.addTo(this);
         $( "#viz_left" ).css( "visibility", "visible" );
         $( "#viz_right" ).css( "visibility", "visible" );
+        $( "#des_age" ).css("visibility", "visible");
     }
 });
 
@@ -208,6 +209,7 @@ map.on('overlayremove', function (eventLayer) {
 		this.removeControl(legend);
 		$( "#viz_left" ).css( "visibility", "hidden" );
 		$( "#viz_right" ).css( "visibility", "hidden" );
+		$("#des_age").css("visibility", "hidden");
 	}
 });
 
