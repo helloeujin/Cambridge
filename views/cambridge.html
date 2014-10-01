@@ -9,8 +9,19 @@
 
 	<style>
 		html, body {
+			width: 100%;
 		    height: 100%;
 		    font: 11px sans-serif;
+		    margin: 0px;
+		}
+		h1 {
+			position: absolute;
+			left: 80px;
+			top: 140px;
+			letter-spacing: 3px;
+			z-index: 10 !important;
+			font-weight: normal;
+			/*color: white;*/
 		}
 
 		.bigscreen {
@@ -19,6 +30,33 @@
 			left: 0px;
 			width: 100%;
 			height: 100%;
+			z-index: 0 !important;
+		}
+
+		.side_left {
+			position: absolute;
+			left: 80px;
+			top: 0px;
+			width: 150px;
+			height: 100%;
+			/*background-color: rgba(80,80,80,0.4);*/
+			background-color: rgba(255, 255,255,0.6);
+			/*box-shadow: 113px 13px 13px rgba(0,0,0,0);*/
+			z-index: 5 !important;
+			/*visibility: hidden;*/
+		}
+
+		.side_right {
+			position: absolute;
+			left: 230px;
+			top: 0px;
+			width: 150px;
+			height: 100%;
+			/*background-color: rgba(80,80,80,0.4);*/
+			background-color: rgba(255, 255,255,0.6);
+			/*box-shadow: 113px 13px 13px rgba(0,0,0,0);*/
+			z-index: 5 !important;
+			/*visibility: hidden;*/
 		}
 
 		#tooltip {
@@ -30,7 +68,6 @@
 			visibility: hidden;
 			background-color: #fff;
 			font: 11px sans-serif;
-			/*font-weight: bold;*/
 			padding: 12px;
 			padding-left: 16px;
 			box-shadow: 3px 3px 3px rgba(0,0,0,0.15);
@@ -41,6 +78,7 @@
 		}
 
 		.legend {
+			width: 150px;
 			text-align: left;
 			line-height: 180% !important;
 			font: 11px sans-serif;
@@ -50,11 +88,11 @@
 		}
 
 		.legend i {
-			width: 11px;
-			height: 11px;
+			width: 9px;
+			height: 9px;
 			float: left;
 			margin-right: 8px;
-			padding: 1px;
+			padding: 2px;
 			opacity: 0.7;
 		}
 
@@ -81,18 +119,50 @@
 	        border-radius: 0px !important;
 	    }
 
+
+		/*population by age bar graph*/
+	    .bar.positive {
+		  fill: #60b260;
+		}
+
+		.bar.negative {
+		  fill: #f4b925;
+		}
+
+		.axis text {
+		  font: 10px sans-serif;
+		}
+
+		.axis path,
+		.axis line {
+		  fill: none;
+		  stroke: #000;
+		  shape-rendering: crispEdges;
+		}
+
 	</style>
 </head>
 
 <body>
+	<!-- <h1>Cambridge</h1> -->
+
+	<div class="side_left" id="viz_left"></div>
+	<div class="side_right" id="viz_right"></div>
+	<!-- <div class="side" id="A"></div>
+	<div class="side" id="B"></div>
+	<div class="side" id="C"></div> -->
+
+
 	<div class="bigscreen" id="map"></div>
 	
 	<script src="/js/leaflet.js"></script> <!-- leaflet -->
 	<script src="http://d3js.org/d3.v3.min.js"></script> <!-- d3 -->
 	<script src="http://d3js.org/queue.v1.min.js"></script>
 	<script src="//code.jquery.com/jquery-1.11.0.min.js"></script> <!-- jquery -->
-
+	
+	<script src="pop_age.js" type="text/javascript"></script>
 	<script src="cambridge.js" type="text/javascript"></script>
+	
 	
 <!-- leaflet ex: http://leafletjs.com/examples/geojson.html-->
 <!-- 

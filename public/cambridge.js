@@ -1,17 +1,3 @@
-// Cambridge
-
-// var map = L.map('map').setView([42.3783903,-71.1129096], 13);
-
-// L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
-// 	maxZoom: 18,
-// 	id: 'examples.map-20v6611k' // light grey !
-// 	// id: 'examples.map-0l53fhk2' // dark grey & brown
-// 	// id: 'examples.map-8ced9urs' // black & white !
-// 	// id: 'examples.map-i875kd35' // blue & yellow like google map
-// 	// id: 'examples.map-zr0njcqy' // blue & yellow like google map
-// }).addTo(map);
-
-
 var total_population = new L.LayerGroup(); // population layer
 var age_population = new L.LayerGroup();
 var sewer = new L.LayerGroup();
@@ -23,7 +9,7 @@ var housingAcrebyID = d3.map(); // housing units per acre
 
 // age population data
 var under_18 = d3.map();
-
+var over_65 = d3.map();
 
 var quantize = d3.scale.quantize()
 	.domain([0, 9000])
@@ -44,11 +30,11 @@ queue() // upload data using queue
 	})
 	.defer(d3.csv, "camb_tract_age_2010.csv", function(d) {
 		under_18.set(d.id, +d.under_18);
-		console.log(d.under_18);
+		over_65.set(d.id, +d.over_65);
+		// console.log(d.under_18);
 	})
 	.await(ready);
 	
-
 
 // tooltip !
 var tooltip = d3.select("body")
@@ -93,9 +79,8 @@ function highlightFeature(e) {
 	var layer = e.target;
 
 	// mouse position
-	var x = e.containerPoint.x;
-	var y = e.containerPoint.y;
-    // console.log(x + "," + y);
+	var tx = e.containerPoint.x;
+	var ty = e.containerPoint.y;
 
 	layer.setStyle({
 		weight: 1.5,
@@ -103,17 +88,15 @@ function highlightFeature(e) {
 		fillOpacity: 0.82
 	});
 
-	// if(!L.Browser.ie && !L.Browser.opera) {
-		layer.bringToFront();
-	// } // draw line above other features
+	layer.bringToFront();
 
 	var tract = layer.feature.properties.NAME10;
 	var pop = rateById.get(tract);
 	var pop_per_acre = popAcrebyID.get(tract);
 	var housing_per_acre = housingAcrebyID.get(tract);
 
-	tooltip.style("left", x-70+"px");
-	tooltip.style("top", y+40+"px");
+	tooltip.style("left", tx-70+"px");
+	tooltip.style("top", ty+40+"px");
 
 	tooltip.html(function(d) {
 		return "<span style='font-weight:bold;font-size:14px'>Tract " 
@@ -127,6 +110,7 @@ function highlightFeature(e) {
 	});
 
 	tooltip.style("visibility", "visible");
+	// get_ageByPopulation(tract);
 }
 
 
@@ -142,7 +126,6 @@ function resetHighlight(e) {
 	});
 
 	layer.bringToBack();
-
 	tooltip.style("visibility", "hidden");
 }
  
@@ -167,27 +150,6 @@ function ready(error, tract, drainage) {
 		onEachFeature: onEachFeature
 	}).addTo(total_population);
 
-	// age population
-	L.geoJson(tract, {
-		style: function(feature) {
-
-
-			var tract = feature.properties.NAME10;
-
-			var c = getColor( quantize_age( under_18.get(tract) ) );
-			console.log( under_18.get(tract) );
-
-			return {
-				color: c,
-				weight: 1.3,
-				fillColor: c,
-				fillOpacity: 0.86
-			};
-		},
-
-		// onEachFeature: onEachFeature
-	}).addTo(age_population);
-
 	// drainage 
 	L.geoJson(drainage, {
 		style: function(feature) {
@@ -210,7 +172,7 @@ var grayscale   = L.tileLayer(mbUrl, {id: 'examples.map-20v6611k'}),
 	streets  = L.tileLayer(mbUrl, {id: 'examples.map-i875mjb7'});
 
 var map = L.map('map', {
-	center: [42.3783903,-71.1129096],
+	center: [42.3783903,-71.1129096 - 0.015],
 	zoom: 13,
 	layers: [grayscale, total_population]
 });
@@ -224,8 +186,8 @@ var baseLayers = {
 
 var overlays = {
 	"Sewage network": sewer,
-	"Total population": total_population,
-	"Population by age": age_population
+	"Total population": total_population
+	// "Population by age": age_population
 };
 
 L.control.layers(baseLayers, overlays, {collapsed:false}).addTo(map);
@@ -236,12 +198,16 @@ map.on('overlayadd', function (eventLayer) {
     if (eventLayer.name === 'Total population') {
     	// console.log(this);
         legend.addTo(this);
+        $( "#viz_left" ).css( "visibility", "visible" );
+        $( "#viz_right" ).css( "visibility", "visible" );
     }
 });
 
 map.on('overlayremove', function (eventLayer) {
 	if (eventLayer.name === 'Total population') {
 		this.removeControl(legend);
+		$( "#viz_left" ).css( "visibility", "hidden" );
+		$( "#viz_right" ).css( "visibility", "hidden" );
 	}
 });
 
@@ -260,4 +226,3 @@ function getColor(d) {
 		case 'q8-9': return "rgb(8,48,107)";
 	}
 }
-
