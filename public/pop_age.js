@@ -23,8 +23,12 @@ var svg_right = d3.select("#viz_right").append("svg")
       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 
-var xAxis = d3.svg.axis()
+var xAxis_left = d3.svg.axis()
     .scale(tx)
+    .orient("bottom");
+
+var xAxis_right = d3.svg.axis()
+    .scale(x)
     .orient("bottom");
 
 var des_age = d3.select("body")
@@ -72,7 +76,12 @@ d3.csv("camb_tract_age_2010.csv", function(error, data) {
 svg_left.append("g")
       .attr("transform", "translate(0,520)")
       .attr("class", "x axis")
-      .call(xAxis);
+      .call(xAxis_left);
+
+svg_right.append("g")
+      .attr("transform", "translate(0,520)")
+      .attr("class", "x axis")
+      .call(xAxis_right);
 
 
 des_age.attr("class", "des_age");
@@ -89,4 +98,4 @@ des_age.html(function() {
     ;
 });
 
-des_age.style("visibility", "visible");
+// des_age.style("visibility", "visible");
