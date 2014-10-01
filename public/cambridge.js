@@ -110,7 +110,7 @@ function highlightFeature(e) {
 	});
 
 	tooltip.style("visibility", "visible");
-	// get_ageByPopulation(tract);
+	highlightAge(tract);
 }
 
 

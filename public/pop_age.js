@@ -100,4 +100,57 @@ des_age.html(function() {
     ;
 });
 
-// des_age.style("visibility", "visible");
+
+// var h_left = d3.select("body").append("svg")
+//       .attr("width", width + margin.left + margin.right)
+//       .attr("height", height + margin.top + margin.bottom)
+//     .append("g")
+//       .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+// function highlightAge(tract) {
+//   console.log(tract);
+
+//   d3.csv("camb_tract_age_2010.csv", function(error, data) {
+
+//     h_left.selectAll(".bar")
+//       .data(data)
+//     .enter().append("rect")
+//       .attr("class", function(d, i) { 
+//         return "highlight";
+//       })
+//       .attr("x", function(d) { 
+//         return 0;
+//       })
+//       .attr("y", function(d, i) { 
+//         if(tract === d.id) {
+//           console.log(i);
+//           return i*15 + 20; 
+//         }
+//       })
+//       .attr("width", function(d) { 
+//         return width; 
+//       })
+//       .attr("height", 10);
+
+
+//     // svg_right.selectAll(".bar")
+//     //   .data(data)
+//     // .enter().append("rect")
+//     //   .attr("class", function(d, i) { 
+//     //     return "bar negative";
+//     //   })
+//     //   .attr("x", function(d) { 
+//     //     return 0; 
+//     //   })
+//     //   .attr("y", function(d,i) { 
+//     //     return i*15 + 20; 
+//     //   })
+//     //   .attr("width", function(d) { 
+//     //     return x(d.over_65); 
+//     //   })
+//     //   .attr("height", 3);
+//   });
+
+
+// }
