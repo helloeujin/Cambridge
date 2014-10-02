@@ -37,53 +37,66 @@ var des_age = d3.select("body")
   .append("div")
   .attr("id", "des_age");
 
+// function drawAge() {
+  d3.csv("camb_tract_age_2010.csv", function(error, data) {
+    svg_left.selectAll(".bar")
+      .data(data)
+    .enter().append("rect")
+      .attr("class", function(d, i) { 
+        return "bar positive";
+      })
+      .attr("x", function(d) { 
+        return width - x(d.under_18); 
+      })
+      .attr("y", function(d, i) { 
+        return i*15 + 20; 
+      })
+      .attr("width", function(d) { 
+        return x(d.under_18); 
+      })
+      .attr("height", function(d) {
+        // selectedTract = 3549;
+        console.log(d.id);
+        console.log(selectedTract);
+        if(d.id == selectedTract) {
 
-d3.csv("camb_tract_age_2010.csv", function(error, data) {
-  svg_left.selectAll(".bar")
-    .data(data)
-  .enter().append("rect")
-    .attr("class", function(d, i) { 
-      return "bar positive";
-    })
-    .attr("x", function(d) { 
-      return width - x(d.under_18); 
-    })
-    .attr("y", function(d, i) { 
-      return i*15 + 20; 
-    })
-    .attr("width", function(d) { 
-      return x(d.under_18); 
-    })
-    .attr("height", 3);
+          return 10;
+        } else {
+          return 3;
+        }
+        // 3;
+      });
 
 
-  svg_right.selectAll(".bar")
-    .data(data)
-  .enter().append("rect")
-    .attr("class", function(d, i) { 
-      return "bar negative";
-    })
-    .attr("x", function(d) { 
-      return 0; 
-    })
-    .attr("y", function(d,i) { 
-      return i*15 + 20; 
-    })
-    .attr("width", function(d) { 
-      return x(d.over_65); 
-    })
-    .attr("height", 3);
-});
+    svg_right.selectAll(".bar")
+      .data(data)
+    .enter().append("rect")
+      .attr("class", function(d, i) { 
+        return "bar negative";
+      })
+      .attr("x", function(d) { 
+        return 0; 
+      })
+      .attr("y", function(d,i) { 
+        return i*15 + 20; 
+      })
+      .attr("width", function(d) { 
+        return x(d.over_65); 
+      })
+      .attr("height", 3);
+  });
 
-svg_left.append("g")
-      .attr("transform", "translate(0,520)")
-      .attr("class", "x axis")
-      .call(xAxis_left);
+  svg_left.append("g")
+        .attr("transform", "translate(0,520)")
+        .attr("class", "x axis")
+        .call(xAxis_left);
 
-svg_right.append("g")
-      .attr("transform", "translate(0,520)")
-      .attr("class", "x axis")
-      .call(xAxis_right);
+  svg_right.append("g")
+        .attr("transform", "translate(0,520)")
+        .attr("class", "x axis")
+        .call(xAxis_right);
+
+// }
 
 
 des_age.attr("class", "des_age");
@@ -111,46 +124,45 @@ des_age.html(function() {
 // function highlightAge(tract) {
 //   console.log(tract);
 
-//   d3.csv("camb_tract_age_2010.csv", function(error, data) {
+  // d3.csv("camb_tract_age_2010.csv", function(error, data) {
 
-//     h_left.selectAll(".bar")
-//       .data(data)
-//     .enter().append("rect")
-//       .attr("class", function(d, i) { 
-//         return "highlight";
-//       })
-//       .attr("x", function(d) { 
-//         return 0;
-//       })
-//       .attr("y", function(d, i) { 
-//         if(tract === d.id) {
-//           console.log(i);
-//           return i*15 + 20; 
-//         }
-//       })
-//       .attr("width", function(d) { 
-//         return width; 
-//       })
-//       .attr("height", 10);
+  //   svg_left.selectAll(".bar")
+  //   .data(data)
+  // .enter().append("rect")
+  //   .attr("class", function(d, i) { 
+  //     return "bar positive";
+  //   })
+  //   .attr("x", function(d) { 
+  //     return width - x(d.under_18); 
+  //   })
+  //   .attr("y", function(d, i) { 
+  //     console.log(i);
+  //     return i*15 + 20; 
+  //   })
+  //   .attr("width", function(d) { 
+  //     return x(d.under_18); 
+  //   })
+  //   .attr("height", 8);
 
 
-//     // svg_right.selectAll(".bar")
-//     //   .data(data)
-//     // .enter().append("rect")
-//     //   .attr("class", function(d, i) { 
-//     //     return "bar negative";
-//     //   })
-//     //   .attr("x", function(d) { 
-//     //     return 0; 
-//     //   })
-//     //   .attr("y", function(d,i) { 
-//     //     return i*15 + 20; 
-//     //   })
-//     //   .attr("width", function(d) { 
-//     //     return x(d.over_65); 
-//     //   })
-//     //   .attr("height", 3);
-//   });
+
+  //   // svg_right.selectAll(".bar")
+  //   //   .data(data)
+  //   // .enter().append("rect")
+  //   //   .attr("class", function(d, i) { 
+  //   //     return "bar negative";
+  //   //   })
+  //   //   .attr("x", function(d) { 
+  //   //     return 0; 
+  //   //   })
+  //   //   .attr("y", function(d,i) { 
+  //   //     return i*15 + 20; 
+  //   //   })
+  //   //   .attr("width", function(d) { 
+  //   //     return x(d.over_65); 
+  //   //   })
+  //   //   .attr("height", 3);
+  // });
 
 
 // }

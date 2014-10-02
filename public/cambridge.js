@@ -2,6 +2,8 @@ var total_population = new L.LayerGroup(); // population layer
 var age_population = new L.LayerGroup();
 var sewer = new L.LayerGroup();
 
+var selectedTract = 0;
+
 // total populcation data
 var rateById = d3.map();
 var popAcrebyID = d3.map(); // population per acre
@@ -59,7 +61,7 @@ legend.onAdd = function(map) {
 		labels = [],
 		from, to;
 
-	labels.push("2010 Population");
+	labels.push("Total population (2010)");
 
 	for(var i = 0; i < grades.length; i++) {
 		from = grades[i];
@@ -110,7 +112,10 @@ function highlightFeature(e) {
 	});
 
 	tooltip.style("visibility", "visible");
-	highlightAge(tract);
+	// highlightAge(tract);
+	selectedTract = tract;
+
+	// console.log(selectedTract);
 }
 
 
@@ -127,6 +132,9 @@ function resetHighlight(e) {
 
 	layer.bringToBack();
 	tooltip.style("visibility", "hidden");
+
+	selectedTract = 0;
+	// console.log(selectedTract);
 }
  
 
@@ -135,9 +143,13 @@ function ready(error, tract, drainage) {
 
 	//  total population
 	L.geoJson(tract, {
+
+		
+
 		style: function(feature) {
 			var tract = feature.properties.NAME10;
 			var c = getColor( quantize( rateById.get(tract) ) );
+
 
 			return {
 				color: c,
@@ -148,7 +160,11 @@ function ready(error, tract, drainage) {
 		},
 
 		onEachFeature: onEachFeature
+
+		
 	}).addTo(total_population);
+
+
 
 	// drainage 
 	L.geoJson(drainage, {
@@ -162,6 +178,8 @@ function ready(error, tract, drainage) {
 			};
 		}
 	}).addTo(sewer);
+
+	// drawAge();
 }
 
 
@@ -200,7 +218,7 @@ map.on('overlayadd', function (eventLayer) {
         legend.addTo(this);
         $( "#viz_left" ).css( "visibility", "visible" );
         $( "#viz_right" ).css( "visibility", "visible" );
-        $( "#des_age" ).css("visibility", "visible");
+        $( "#des_age" ).css( "visibility" , "visible" );
     }
 });
 
@@ -209,7 +227,7 @@ map.on('overlayremove', function (eventLayer) {
 		this.removeControl(legend);
 		$( "#viz_left" ).css( "visibility", "hidden" );
 		$( "#viz_right" ).css( "visibility", "hidden" );
-		$("#des_age").css("visibility", "hidden");
+		$( "#des_age" ).css( "visibility", "hidden" );
 	}
 });
 
