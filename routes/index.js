@@ -20,6 +20,11 @@ exports.main = function(req, res) {
 	res.render('cambridge.html');
 }
 
+exports.sewer = function(req, res) {
+	console.log("sewer page requested");
+	res.render('camb_sewer.html');
+}
+
 // exports.cambridge = function(req, res) {
 // 	console.log("cambridge map page requested");
 // 	res.render('cambridge.html');

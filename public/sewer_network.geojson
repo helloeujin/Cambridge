@@ -1,0 +1,10 @@
+{
+"type": "FeatureCollection",
+"features": [
+{ "type": "Feature", "properties": { "OBJECTID": 1, "ENABLED": 1, "WATERTYPE": "COMB", "UPSTREAMIN": 23.9, "DOWNSTREAM": 0.0, "DIAMETER": 30.0, "HEIGHT": 0.0, "WIDTH": 0.0, "SLOPE": 0.0, "PIPEFUNCTI": "COLL", "Line_ID": 1, "Start_ID": 4254, "End_ID": 4309, "Section_": 706.5, "Load_res": 25.402, "Load_com_i": 29.347, "Load_tot": 54.749, "Shape_Leng": 209.803270989999987, "A": 1, "B": 4254, "C": 4309, "D": 185, "E": 15 }, 
+"geometry": { "type": "LineString", "coordinates": [ [ 763280.497318714857101, 2960231.277629479765892 ], [ 763465.829297140240669, 2960132.944164723157883  ] ] } },
+{ "type": "Feature", "properties": { "OBJECTID": 2, "ENABLED": 1, "WATERTYPE": "SEW", "UPSTREAMIN": 21.16, "DOWNSTREAM": 20.5, "DIAMETER": 8.0, "HEIGHT": 0.0, "WIDTH": 0.0, "SLOPE": 0.0, "PIPEFUNCTI": "COLL", "Line_ID": 2, "Start_ID": 4151, "End_ID": 23113, "Section_": 50.24, "Load_res": 84.107, "Load_com_i": 46.544, "Load_tot": 130.651, "Shape_Leng": 51.128787523900002, "A": 2, "B": 4151, "C": 23113, "D": 192, "E": 20 }, 
+"geometry": { "type": "LineString", "coordinates": [ [ 762948.749950721859932, 2960406.250048562884331  ], [ 762997.802017971873283, 2960391.826192900538445  ] ] } },
+{ "type": "Feature", "properties": { "OBJECTID": 31253, "ENABLED": 1, "WATERTYPE": "COMB", "UPSTREAMIN": 2.96, "DOWNSTREAM": 2.84999999, "DIAMETER": 66.0, "HEIGHT": 0.0, "WIDTH": 0.0, "SLOPE": 0.141, "PIPEFUNCTI": "COLL", "Line_ID": 31253, "Start_ID": 31071, "End_ID": 1147, "Section_": 3419.46, "Load_res": 8927.245, "Load_com_i": 12557.573, "Load_tot": 21484.818, "Shape_Leng": 29.5725607868, "A": 31253, "B": 31071, "C": 1147, "D": 2, "E": 187 }, "geometry": { "type": "LineString", "coordinates": [ [ 754922.644939973950386, 2972480.814153969287872  ], [ 754908.220100060105324, 2972506.630047231912613  ] ] } }
+]
+}

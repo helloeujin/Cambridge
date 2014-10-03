@@ -115,6 +115,21 @@ function highlightFeature(e) {
 	// highlightAge(tract);
 	selectedTract = tract;
 
+	// d3.selectAll(".viz_left").each( function(d,i) {
+	// 	console.log(d);
+	// });
+
+
+	// console.log(d3.select("#viz_left").attr("left"));
+	console.log(d3.select(".side_left"));
+
+	// d3.selectAll("#viz_left").each( function(d, i){
+	//   // if(d.someId == targetId){
+	//   	console.log(i);
+	//     // console.log( d3.select(this).attr("x") );
+	// });
+
+	// drawAge();
 	// console.log(selectedTract);
 }
 
@@ -134,6 +149,7 @@ function resetHighlight(e) {
 	tooltip.style("visibility", "hidden");
 
 	selectedTract = 0;
+	// drawAge();
 	// console.log(selectedTract);
 }
  
@@ -144,12 +160,9 @@ function ready(error, tract, drainage) {
 	//  total population
 	L.geoJson(tract, {
 
-		
-
 		style: function(feature) {
 			var tract = feature.properties.NAME10;
 			var c = getColor( quantize( rateById.get(tract) ) );
-
 
 			return {
 				color: c,
@@ -160,10 +173,7 @@ function ready(error, tract, drainage) {
 		},
 
 		onEachFeature: onEachFeature
-
-		
 	}).addTo(total_population);
-
 
 
 	// drainage 

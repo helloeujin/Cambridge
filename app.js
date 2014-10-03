@@ -74,6 +74,7 @@ var routes = require('./routes/index.js');
 
 app.get('/', routes.main);
 app.get('/cambridge', routes.cambridge);
+app.get('/sewer', routes.sewer);
 
 // app.get('/', routes.index);
 

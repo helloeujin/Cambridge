@@ -56,14 +56,14 @@ var des_age = d3.select("body")
       })
       .attr("height", function(d) {
         // selectedTract = 3549;
-        console.log(d.id);
-        console.log(selectedTract);
-        if(d.id == selectedTract) {
+        // console.log(d.id);
+        // console.log(selectedTract);
+        // if(d.id == selectedTract) {
 
-          return 10;
-        } else {
+        //   return 10;
+        // } else {
           return 3;
-        }
+        // }
         // 3;
       });
 
