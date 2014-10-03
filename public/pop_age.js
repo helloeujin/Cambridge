@@ -54,18 +54,7 @@ var des_age = d3.select("body")
       .attr("width", function(d) { 
         return x(d.under_18); 
       })
-      .attr("height", function(d) {
-        // selectedTract = 3549;
-        // console.log(d.id);
-        // console.log(selectedTract);
-        // if(d.id == selectedTract) {
-
-        //   return 10;
-        // } else {
-          return 3;
-        // }
-        // 3;
-      });
+      .attr("height", 2);
 
 
     svg_right.selectAll(".bar")
@@ -83,7 +72,7 @@ var des_age = d3.select("body")
       .attr("width", function(d) { 
         return x(d.over_65); 
       })
-      .attr("height", 3);
+      .attr("height", 2);
   });
 
   svg_left.append("g")

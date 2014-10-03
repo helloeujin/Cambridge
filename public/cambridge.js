@@ -2,8 +2,6 @@ var total_population = new L.LayerGroup(); // population layer
 var age_population = new L.LayerGroup();
 var sewer = new L.LayerGroup();
 
-var selectedTract = 0;
-
 // total populcation data
 var rateById = d3.map();
 var popAcrebyID = d3.map(); // population per acre
@@ -112,25 +110,21 @@ function highlightFeature(e) {
 	});
 
 	tooltip.style("visibility", "visible");
-	// highlightAge(tract);
-	selectedTract = tract;
 
-	// d3.selectAll(".viz_left").each( function(d,i) {
-	// 	console.log(d);
-	// });
+	// console.log( svg_left.selectAll(".bar").attr("height") ); //2
 
+	svg_left.selectAll(".bar").each(function(d) {
+		if(d.id ==  tract) {
+			// console.log(tract+", "+d3.select(this).attr("height"));
+			d3.select(this).attr("height", 10);
+		}
+	});
 
-	// console.log(d3.select("#viz_left").attr("left"));
-	console.log(d3.select(".side_left"));
-
-	// d3.selectAll("#viz_left").each( function(d, i){
-	//   // if(d.someId == targetId){
-	//   	console.log(i);
-	//     // console.log( d3.select(this).attr("x") );
-	// });
-
-	// drawAge();
-	// console.log(selectedTract);
+	svg_right.selectAll(".bar").each(function(d) {
+		if(d.id ==  tract) {
+			d3.select(this).attr("height", 10);
+		}
+	})
 }
 
 
@@ -148,9 +142,17 @@ function resetHighlight(e) {
 	layer.bringToBack();
 	tooltip.style("visibility", "hidden");
 
-	selectedTract = 0;
-	// drawAge();
-	// console.log(selectedTract);
+	svg_left.selectAll(".bar").each(function(d) {
+		if(d.id ==  tract) {
+			d3.select(this).attr("height", 2);
+		}
+	});
+
+	svg_right.selectAll(".bar").each(function(d) {
+		if(d.id ==  tract) {
+			d3.select(this).attr("height", 2);
+		}
+	})
 }
  
 
@@ -188,8 +190,6 @@ function ready(error, tract, drainage) {
 			};
 		}
 	}).addTo(sewer);
-
-	// drawAge();
 }
 
 
@@ -240,7 +240,6 @@ map.on('overlayremove', function (eventLayer) {
 		$( "#des_age" ).css( "visibility", "hidden" );
 	}
 });
-
 
 ////////
 function getColor(d) {
