@@ -1,6 +1,7 @@
 var total_population = new L.LayerGroup(); // population layer
 var age_population = new L.LayerGroup();
 var sewer = new L.LayerGroup();
+var zoning = new L.LayerGroup();
 
 // total populcation data
 var rateById = d3.map();
@@ -23,6 +24,7 @@ var quantize_age = d3.scale.quantize()
 queue() // upload data using queue 
 	.defer(d3.json, "tracts_2010.geojson") // cambridge geo data
 	.defer(d3.json, "infra_drainage.geojson")// cambridge drainage data
+	.defer(d3.json, "CDD_ZoningDistricts.geojson")
 	.defer(d3.csv, "camb_tract_pop_2010.csv", function(d) { 
 		rateById.set(d.id, +d.population); // cambridge CDD data
 		popAcrebyID.set(d.id, + d.population_per_acre);
@@ -116,13 +118,13 @@ function highlightFeature(e) {
 	svg_left.selectAll(".bar").each(function(d) {
 		if(d.id ==  tract) {
 			// console.log(tract+", "+d3.select(this).attr("height"));
-			d3.select(this).attr("height", 10);
+			d3.select(this).attr("height", 8);
 		}
 	});
 
 	svg_right.selectAll(".bar").each(function(d) {
 		if(d.id ==  tract) {
-			d3.select(this).attr("height", 10);
+			d3.select(this).attr("height", 8);
 		}
 	})
 }
@@ -156,7 +158,7 @@ function resetHighlight(e) {
 }
  
 
-function ready(error, tract, drainage) {
+function ready(error, tract, drainage, zone) {
 	console.log("tract geographic data uploaded");
 
 	//  total population
@@ -184,12 +186,25 @@ function ready(error, tract, drainage) {
 
 			return {
 				color: "rgba(255,20,20,1)",
-				weight: 3,
-				// fillOpacity: 1,
+				weight: 1,
 				opacity: 1
 			};
 		}
 	}).addTo(sewer);
+
+
+	// zoning district
+	L.geoJson(zone, {
+		style: function(feature) {
+			return {
+				color: "blue",
+				weight: 1,
+				opacity: 1,
+				fillColor: "white",
+				fillOpacity: 0
+			}
+		}
+	}).addTo(zoning);
 }
 
 
@@ -214,7 +229,8 @@ var baseLayers = {
 
 var overlays = {
 	"Sewage network": sewer,
-	"Total population": total_population
+	"Total population": total_population,
+	"Zoning district": zoning
 	// "Population by age": age_population
 };
 
