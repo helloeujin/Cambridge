@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>Cambridge</title>
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+<script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.2/mapbox.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.2/mapbox.css' rel='stylesheet' />
+
+<script src="http://d3js.org/d3.v3.min.js"></script> 
+<script src="http://d3js.org/queue.v1.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+
+<!-- <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" /> -->
+<!-- <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script> -->
+
+<style>
+  body { margin:0; padding:0; font-family: sans-serif; }
+  #map { position:absolute; top:0; bottom:0; width:100%; background-color:rgba(0,0,0,1); }
+</style>
+</head>
+<body>
+
+
+<style>
+.menu-ui {
+  background:#fff;
+  position:absolute;
+  top:10px;right:10px;
+  z-index:1;
+  border-radius:0px;
+  width:120px;
+  border:1px solid rgba(0,0,0,0.1);
+  }
+  .menu-ui a {
+    font-size:11px;
+    letter-spacing: 1px;
+    color: #000;
+    display:block;
+    margin:0;padding:0;
+    padding:10px;
+    text-decoration:none;
+    border-bottom:1px solid rgba(0,0,0,0.25);
+    text-align:center;
+    }
+    .menu-ui a:first-child {
+      border-radius:0px 0px 0 0;
+      }
+    .menu-ui a:last-child {
+      border:none;
+      border-radius:0 0 0px 0px;
+      }
+    .menu-ui a:hover {
+      background:#f8f8f8;
+      /*color:#404040;*/
+      }
+    .menu-ui a.active {
+      background:#000;
+      color:#FFF;
+      }
+      .menu-ui a.active:hover {
+        background:#000;
+        }
+</style>
+<nav id='menu-ui' class='menu-ui'></nav>
+<div id='map'></div>
+
+<script>
+L.mapbox.accessToken = 'pk.eyJ1IjoibWVnZ29uYWd1bCIsImEiOiI1cFpUOE5RIn0.jooCCIM584kmRt2nkSOcHw';
+
+var circle_options = {
+      color: '#fff',      // Stroke color
+      opacity: 1,         // Stroke opacity
+      weight: 10,         // Stroke weight
+      fillColor: '#000',  // Fill color
+      fillOpacity: 0.6    // Fill opacity
+  };
+
+
+
+var map = L.map('map').setView([42.3783903,-71.1129096], 13);
+var layers = document.getElementById('menu-ui');
+var base_layer = L.mapbox.tileLayer('examples.map-20v6611k');
+var zoning = L.mapbox.featureLayer().loadURL('CDD_ZoningDistricts.geojson');
+
+
+queue() // upload data using queue 
+	.defer(d3.json, "tracts_2010.geojson")
+	.await(ready);
+
+
+// addLayer(L.mapbox.tileLayer('examples.map-i87786ca'), 'Base Map', 1); // color
+// addLayer(base_layer, 'Base Map', 1);  // grey
+// addLayer(total_population, 'Total population', 2);
+// addLayer(zoning, 'Zoning districts', 3);
+
+function addLayer(layer, name, zIndex) {
+
+    layer
+        .setZIndex(zIndex);
+        // .addTo(map);
+    // if(layer == base_layer) {
+    // 	layer.addTo(map);
+    // }
+
+    // Create a simple layer switcher that
+    // toggles layers on and off.
+    var link = document.createElement('a');
+        link.href = '#';
+        link.className = '';
+        link.innerHTML = name;
+
+    if(layer == base_layer) {
+    	layer.addTo(map);
+    	link.className = 'active';
+    }
+
+    link.onclick = function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (map.hasLayer(layer)) {
+            map.removeLayer(layer);
+            this.className = '';
+        } else {
+            map.addLayer(layer);
+            this.className = 'active';
+        }
+    };
+
+    layers.appendChild(link);
+}
+
+
+// // add layers
+function ready(error, tract) {
+	console.log("tract geographic data uploaded");
+
+	var total_population = L.geoJson(tract,  {
+	      style: getStyle,
+	      // onEachFeature: onEachFeature
+	  });
+
+	addLayer(base_layer, 'Base Map', 1);  // grey
+	addLayer(total_population, 'Total population', 2);
+	addLayer(zoning, 'Zoning districts', 3);
+
+	// //  total population
+	// L.geoJson(tract, {
+
+	// 	style: function(feature) {
+	// 		var tract = feature.properties.NAME10;
+	// 		var c = getColor( quantize( rateById.get(tract) ) );
+
+	// 		return {
+	// 			color: c,
+	// 			weight: 1.3,
+	// 			fillColor: c,
+	// 			fillOpacity: 0.86
+	// 		};
+	// 	},
+
+	// 	onEachFeature: onEachFeature
+	// }).addTo(total_population);
+}
+
+function getStyle(feature) {
+  return {
+      weight: 5,
+      opacity: 0.1,
+      color: 'red',
+      fillOpacity: 0.7,
+      fillColor: 'red'
+  };
+}
+
+function getColor(d) {
+	switch(d) {
+		case 'q0-9': return "rgb(247,251,255)";
+		case 'q1-9': return "rgb(222,235,247)";
+		case 'q2-9': return "rgb(198,219,239)";
+		case 'q3-9': return "rgb(158,202,225)";
+		case 'q4-9': return "rgb(107,174,214)";
+		case 'q5-9': return "rgb(66,146,198)";
+		case 'q6-9': return "rgb(33,113,181)";
+		case 'q7-9': return "rgb(8,81,156)";
+		case 'q8-9': return "rgb(8,48,107)";
+	}
+}
+
+</script>
+
+
+</body>
+</html>
