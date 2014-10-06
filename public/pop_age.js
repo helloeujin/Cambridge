@@ -93,10 +93,10 @@ des_age.attr("class", "des_age");
 des_age.html(function() {
   return "<span style='font-weight:bold;font-size:14px'>Tract " 
       + 'population by age' +"</span><br><br>"
-    + "<span style='position:absolute;left:115px;'>" 
+    + "<span style='position:absolute;left:115px;font-size:11px'>" 
       + "Over 65 " 
     +"</span>"
-    + "<span style='position:absolute;left:60px;'>" 
+    + "<span style='position:absolute;left:60px;font-size:11px'>" 
       +"Under 18 " 
       +"</span>"
     ;

@@ -126,7 +126,7 @@ function highlightFeature(e) {
 		if(d.id ==  tract) {
 			d3.select(this).attr("height", 8);
 		}
-	})
+	});
 }
 
 
@@ -154,7 +154,7 @@ function resetHighlight(e) {
 		if(d.id ==  tract) {
 			d3.select(this).attr("height", 2);
 		}
-	})
+	});
 }
  
 
