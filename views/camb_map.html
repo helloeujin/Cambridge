@@ -160,12 +160,17 @@ var layers = document.getElementById('menu-ui');
 var base_layer = L.mapbox.tileLayer('examples.map-20v6611k'); // grey
 // var base_layer = L.mapbox.tileLayer('examples.map-zswgei2n'); // color
 // var base_layer = L.mapbox.tileLayer('examples.map-zr0njcqy');
-addLayer(base_layer, 'Base Map', 1);
+// addLayer(base_layer, 'Base Map', 1);
 
-// var zoning = L.mapbox.featureLayer().loadURL('CDD_ZoningDistricts.geojson');
+
+var sewer_network = L.mapbox.tileLayer('meggonagul.z7pynwmi', {
+	accessToken: L.mapbox.accessToken
+});
+
+
 var total_population;
 var zoning;
-var sewer;
+// var sewer;
 
 var popup = new L.Popup({ autoPan: false });
 
@@ -244,13 +249,17 @@ function ready(error, tract, district, sewer) {
 		style: getZoneStyle
 	});
 
+	// sewer = https://api.tiles.mapbox.com/v4/meggonagul.z7pynwmi/page.html?access_token=pk.eyJ1IjoibWVnZ29uYWd1bCIsImEiOiI1cFpUOE5RIn0.jooCCIM584kmRt2nkSOcHw#13/42.3784/-71.1129
+
 	// sewer = L.geoJson(sewer, {
 	// 	style: getSewerStyle
 	// });
 
 	// addLayer(base_layer, 'Base Map', 1);  // grey
+	addLayer(base_layer, 'Base Map', 1);
 	addLayer(total_population, 'Total population', 2);
 	addLayer(zoning, 'Zoning districts', 3);
+	addLayer(sewer_network, 'Sewer network', 4);
 
 	// $( "#viz_left" ).css( "visibility", "hidden" );
 	// $( "#viz_right" ).css( "visibility", "hidden" );
