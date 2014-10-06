@@ -17,8 +17,8 @@ var astronautModel = require("../models/astronaut.js"); //db model
 exports.main = function(req, res) {
 	console.log("main page requested");
 	// res.render('main.html');
-	res.render('cambridge.html'); // leaflet
-	// res.render('camb_map.html'); // mapbox
+	// res.render('cambridge.html'); // leaflet
+	res.render('camb_map.html'); // mapbox
 }
 
 exports.sewer = function(req, res) {
