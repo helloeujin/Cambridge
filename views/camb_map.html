@@ -223,11 +223,16 @@ function addLayer(layer, name, zIndex) {
             if(layer == total_population) {
             	hideAge();
             } else if(layer == base_layer) {
-            	$("#viz_left").css( "background-color", "rgba(0, 0, 0, 0.2)" );
+            	$("#viz_left").css( {
+            		"background-color": "rgba(0, 0, 0, 0.2)",
+            		"color": "white"
+            	} );
             	$("#viz_right").css( "background-color", "rgba(0, 0, 0, 0.2)" );
-            	$("path").css("stroke", "rgba(255,255,255,0.7)");
-            	$("line").css("stroke", "rgba(255,255,255,0.7)");
-            	$(".axis").css("stroke", "rgba(255,255,255,0.7)");
+            	// $("path").css("stroke", "rgba(255,255,255,0.7)");
+            	$(".axis line").css("stroke", "rgba(255,255,255,0.7)");
+            	$(".axis path").css("stroke", "rgba(255,255,255,0.7)");
+            	$(".axis text").css("color", "white");
+            	$( "#des_age" ).css("color", "white");	
             }
         } else {
             map.addLayer(layer);
@@ -237,9 +242,11 @@ function addLayer(layer, name, zIndex) {
             } else if(layer == base_layer) {
             	$("#viz_left").css( "background-color", "rgba(255, 255,255,0.8)" );
             	$("#viz_right").css( "background-color", "rgba(255, 255,255,0.8)" );
-            	$("path").css("stroke", "#000");
-            	$("line").css("stroke", "#000");
-            	$(".axis").css("stroke", "#000");
+            	// $("path").css("stroke", "#000");
+            	$(".axis line").css("stroke", "#000");
+            	$(".axis path").css("stroke", "#000");
+            	$(".axis text").css("color", "black");
+            	$( "#des_age" ).css("color", "black");	
             }
         }
     };
@@ -395,9 +402,12 @@ function mouseout(e) {
 
 function addAge() {
         //legend.addTo(this);
-        $( "#viz_left" ).css( "visibility", "visible" );
+        $( "#viz_left" ).css( "visibility", "visible");
         $( "#viz_right" ).css( "visibility", "visible" );
-        $( "#des_age" ).css( "visibility" , "visible" );	
+        $( "#des_age" ).css({ 
+        	"visibility": "visible",
+        	// "color": "white"  
+        });	
 }
 
 
@@ -405,7 +415,10 @@ function hideAge() {
 // 		this.removeControl(legend);
 		$( "#viz_left" ).css( "visibility", "hidden" );
 		$( "#viz_right" ).css( "visibility", "hidden" );
-		$( "#des_age" ).css( "visibility", "hidden" );	
+		$( "#des_age" ).css({ 
+        	"visibility": "hidden",
+        	// "color": "black"  
+        });	
 }
 
 
