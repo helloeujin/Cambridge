@@ -222,12 +222,24 @@ function addLayer(layer, name, zIndex) {
 
             if(layer == total_population) {
             	hideAge();
+            } else if(layer == base_layer) {
+            	$("#viz_left").css( "background-color", "rgba(0, 0, 0, 0.2)" );
+            	$("#viz_right").css( "background-color", "rgba(0, 0, 0, 0.2)" );
+            	$("path").css("stroke", "rgba(255,255,255,0.7)");
+            	$("line").css("stroke", "rgba(255,255,255,0.7)");
+            	$(".axis").css("stroke", "rgba(255,255,255,0.7)");
             }
         } else {
             map.addLayer(layer);
             this.className = 'active';
             if(layer == total_population) {
             	addAge();
+            } else if(layer == base_layer) {
+            	$("#viz_left").css( "background-color", "rgba(255, 255,255,0.8)" );
+            	$("#viz_right").css( "background-color", "rgba(255, 255,255,0.8)" );
+            	$("path").css("stroke", "#000");
+            	$("line").css("stroke", "#000");
+            	$(".axis").css("stroke", "#000");
             }
         }
     };
@@ -249,8 +261,6 @@ function ready(error, tract, district, sewer) {
 		style: getZoneStyle
 	});
 
-	// sewer = https://api.tiles.mapbox.com/v4/meggonagul.z7pynwmi/page.html?access_token=pk.eyJ1IjoibWVnZ29uYWd1bCIsImEiOiI1cFpUOE5RIn0.jooCCIM584kmRt2nkSOcHw#13/42.3784/-71.1129
-
 	// sewer = L.geoJson(sewer, {
 	// 	style: getSewerStyle
 	// });
@@ -260,11 +270,6 @@ function ready(error, tract, district, sewer) {
 	addLayer(total_population, 'Total population', 2);
 	addLayer(zoning, 'Zoning districts', 3);
 	addLayer(sewer_network, 'Sewer network', 4);
-
-	// $( "#viz_left" ).css( "visibility", "hidden" );
-	// $( "#viz_right" ).css( "visibility", "hidden" );
-	// $( "#des_age" ).css( "visibility", "hidden" );	
-	// addLayer(sewer, 'Sewer network', 4);
 }
 
 function getSewerStyle(feature) {
@@ -352,7 +357,6 @@ function mousemove(e) {
   // link to viz
   svg_left.selectAll(".bar").each(function(d) {
 		if(d.id ==  tract) {
-			// console.log(tract+", "+d3.select(this).attr("height"));
 			d3.select(this).attr("height", 8);
 		}
 	});
@@ -393,7 +397,7 @@ function addAge() {
         //legend.addTo(this);
         $( "#viz_left" ).css( "visibility", "visible" );
         $( "#viz_right" ).css( "visibility", "visible" );
-        $( "#des_age" ).css( "visibility" , "visible" );;	
+        $( "#des_age" ).css( "visibility" , "visible" );	
 }
 
 
