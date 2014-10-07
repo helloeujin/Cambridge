@@ -111,7 +111,9 @@
 	  fill: #f4b925;
 	}
 	.axis text {
-	  font: 10px sans-serif;
+	  font: 9px sans-serif;
+/*	   stroke: rgba(255,0,0,1);
+	   fill: rgba(255,0,0,1);*/
 	}
 
 	.axis path,
@@ -224,15 +226,15 @@ function addLayer(layer, name, zIndex) {
             	hideAge();
             } else if(layer == base_layer) {
             	$("#viz_left").css( {
-            		"background-color": "rgba(0, 0, 0, 0.2)",
+            		"background-color": "rgba(0, 0, 0, 0.3)",
             		"color": "white"
             	} );
-            	$("#viz_right").css( "background-color", "rgba(0, 0, 0, 0.2)" );
+            	$("#viz_right").css( "background-color", "rgba(0, 0, 0, 0.3)" );
             	// $("path").css("stroke", "rgba(255,255,255,0.7)");
             	$(".axis line").css("stroke", "rgba(255,255,255,0.7)");
             	$(".axis path").css("stroke", "rgba(255,255,255,0.7)");
-            	$(".axis text").css("color", "white");
-            	$( "#des_age" ).css("color", "white");	
+            	$(".axis text").css("fill", "white");
+            	$( "#des_age" ).css("color", "rgba(255,255,255,0.9)");	
             }
         } else {
             map.addLayer(layer);
@@ -242,10 +244,9 @@ function addLayer(layer, name, zIndex) {
             } else if(layer == base_layer) {
             	$("#viz_left").css( "background-color", "rgba(255, 255,255,0.8)" );
             	$("#viz_right").css( "background-color", "rgba(255, 255,255,0.8)" );
-            	// $("path").css("stroke", "#000");
             	$(".axis line").css("stroke", "#000");
             	$(".axis path").css("stroke", "#000");
-            	$(".axis text").css("color", "black");
+            	$(".axis text").css("fill", "black");
             	$( "#des_age" ).css("color", "black");	
             }
         }
@@ -302,9 +303,9 @@ function getStyle(feature) {
 
 	return {
 		weight: 1,
-		opacity: 0.8,
+		opacity: 0.6,
 		color: 'white',
-		fillOpacity: 0.7,
+		fillOpacity: 0.85,
 		fillColor: c
 	};
 }
@@ -351,7 +352,7 @@ function mousemove(e) {
 
   // highlight feature
   layer.setStyle({
-      weight: 1,
+      weight: 1.2,
       opacity: 1,
       fillOpacity: 0.9,
       color: "black"
@@ -362,15 +363,26 @@ function mousemove(e) {
   }
 
   // link to viz
-  svg_left.selectAll(".bar").each(function(d) {
+  svg_left.selectAll(".bar").each(function(d, i) {
 		if(d.id ==  tract) {
 			d3.select(this).attr("height", 8);
+			
+			console.log(i);
+			d3.select(this).attr("y", i*15 + 20-4);
+			// var cy = d3.select(this).attr("y");
+			// d3.select(this).attr("y", cy - 4);
+			// console.log(cy);
+			// d3.select(this).attr("x", this.)
 		}
 	});
 
-	svg_right.selectAll(".bar").each(function(d) {
+	svg_right.selectAll(".bar").each(function(d, i) {
 		if(d.id ==  tract) {
 			d3.select(this).attr("height", 8);
+			d3.select(this).attr("y", i*15 + 20-4);
+			// var cy = d3.select(this).attr("y");
+			// d3.select(this).attr("y", cy - 4);
+			// console.log(cy);
 		}
 	});
 }
@@ -386,15 +398,21 @@ function mouseout(e) {
   var layer = e.target;
   var tract = layer.feature.properties.NAME10;
 
-  svg_left.selectAll(".bar").each(function(d) {
+  svg_left.selectAll(".bar").each(function(d, i) {
 		if(d.id ==  tract) {
 			d3.select(this).attr("height", 2);
+			d3.select(this).attr("y", i*15 + 20);
+			// var cy = d3.select(this).attr("y");
+			// d3.select(this).attr("y", cy + 4);
 		}
 	});
 
-	svg_right.selectAll(".bar").each(function(d) {
+	svg_right.selectAll(".bar").each(function(d, i) {
 		if(d.id ==  tract) {
 			d3.select(this).attr("height", 2);
+			d3.select(this).attr("y", i*15 + 20);
+			// var cy = d3.select(this).attr("y");
+			// d3.select(this).attr("y", cy + 4);
 		}
 	});
 }
