@@ -29,6 +29,7 @@ var popup = new L.Popup({ autoPan: false });
 var rateById = d3.map();
 var popAcrebyID = d3.map(); // population per acre
 var housingAcrebyID = d3.map(); // housing units per acre
+var zoneById = d3.map(); // mapping the zone info
 
 // age population data
 var under_18 = d3.map();
@@ -38,6 +39,9 @@ queue()
 	.defer(d3.json, "tracts_2010.geojson")
 	.defer(d3.json, "CDD_ZoningDistricts.geojson")
 	// .defer(d3.json, "Sewers_with_Load_and_Her.json")
+	// .defer(d3.json, "CDD_ZoningDistricts.geojson", function(d) {
+	// 	// zoneById.set(d.id, +d.)
+	// })
 	.defer(d3.csv, "camb_tract_pop_2010.csv", function(d) { 
 		rateById.set(d.id, +d.population);
 		popAcrebyID.set(d.id, + d.population_per_acre);
@@ -99,8 +103,9 @@ function addLayer(layer, name, zIndex) {
 
 
 // // add layers
-function ready(error, tract, district, sewer) {
+function ready(error, tract, district) {
 	console.log("data uploaded");
+	// console.log(pop);
 
 	total_population = L.geoJson(tract,  {
 		style: getStyle,
@@ -116,7 +121,6 @@ function ready(error, tract, district, sewer) {
 	// 	style: getSewerStyle
 	// });
 
-	// addLayer(base_layer, 'Base Map', 1);  // grey
 	addLayer(base_layer, 'Base Map', 1);
 	addLayer(total_population, 'Total population', 2);
 	addLayer(zoning, 'Zoning districts', 3);
@@ -124,26 +128,12 @@ function ready(error, tract, district, sewer) {
 }
 
 
-function getSewerStyle(feature) {
-	return {
-		weight: 1,
-		color: 'red'
-	};
-}
-
-
-// style for districts
-function getZoneStyle(feature) {
-	var id = feature.properties.ZONE_TYPE;
-	var c = getZoneColor(id);
-
-	return {
-		weight: 1,
-		color: 'white',
-		fillOpacity: 0.7,
-		fillColor: c
-	};
-}
+// function getSewerStyle(feature) {
+// 	return {
+// 		weight: 1,
+// 		color: 'red'
+// 	};
+// }
 
 
 // style for total population
@@ -160,7 +150,6 @@ function getStyle(feature) {
 	};
 }
 
-
 function getColor(d) {
 	if (d >= 0 && d < 1000) { return 'rgb(222,235,247)'; }
 	else if (d >= 1000 && d < 2000) { return "rgb(198,219,239)"; }
@@ -172,80 +161,102 @@ function getColor(d) {
 	else if (d >= 7000) { return "rgb(8,48,107)"; }
 }
 
+
+// style for districts
+function getZoneStyle(feature) {
+	var id = feature.properties.ZONE_TYPE;
+	var info = getZoneInfo(id);
+	var c = getZoneColor(info);
+
+	return {
+		weight: 1,
+		color: 'white',
+		fillOpacity: 0.7,
+		fillColor: c
+	};
+}
+
 function getZoneColor(d) {
-	var residential = "yellow";
-	var institution = "orange";
-	var business = "purple";
-	var commercial = "red";
+	if(d == 'Residential') { return "yellow"; }
+	if(d == 'Institution') { return "orange"; }
+	if(d == 'Business') { return "purple"; }
+	if(d == 'Commercial') { return "red"; }
+	if(d == 'Other') { return "grey"; }
+}
 
-	if(d == 'A-1') { return residential; }
-	if(d == 'A-2') { return residential; }
-	if(d == 'B') { return residential; }
-	if(d == 'C') { return residential; }
-	if(d == 'C-1') { return residential; }
-	if(d == 'C-1A') { return residential; }
-	if(d == 'C-2') { return residential; }
-	if(d == 'C-2A') { return residential; }
-	if(d == 'C-2B') { return residential; }
+function getZoneInfo(d) {
+	if(d == 'A-1') { return 'Residential'; }
+	if(d == 'A-2') { return 'Residential'; }
+	if(d == 'B') { return 'Residential'; }
+	if(d == 'C') { return 'Residential'; }
+	if(d == 'C-1') { return 'Residential'; }
+	if(d == 'C-1A') { return 'Residential'; }
+	if(d == 'C-2') { return 'Residential'; }
+	if(d == 'C-2A') { return 'Residential'; }
+	if(d == 'C-2B') { return 'Residential'; }
 
-	if(d == 'C-3') { return institution; }
-	if(d == 'C-3A') { return institution; }
-	if(d == 'C-3B') { return institution; }
+	if(d == 'C-3') { return 'Institution'; }
+	if(d == 'C-3A') { return 'Institution'; }
+	if(d == 'C-3B') { return 'Institution'; }
 
-	if(d == 'O-1') { return business; }
-	if(d == 'O-2') { return business; }
-	if(d == 'O-2A') { return business; }
-	if(d == 'O-3') { return business; }
-	if(d == 'O-3A') { return business; }
+	if(d == 'O-1') { return 'Business'; }
+	if(d == 'O-2') { return 'Business'; }
+	if(d == 'O-2A') { return 'Business'; }
+	if(d == 'O-3') { return 'Business'; }
+	if(d == 'O-3A') { return 'Business'; }
 
-	if(d == 'BA') { return commercial; }
-	if(d == 'BA-1') { return commercial; }
-	if(d == 'BA-2') { return commercial; }
-	if(d == 'BA-3') { return commercial; }
-	if(d == 'BB') { return commercial; }
-	if(d == 'BB-1') { return commercial; }
-	if(d == 'BB-2') { return commercial; }
-	if(d == 'BC') { return commercial; }
-	if(d == 'BC-1') { return commercial; }
+	if(d == 'BA') { return 'Commercial'; }
+	if(d == 'BA-1') { return 'Commercial'; }
+	if(d == 'BA-2') { return 'Commercial'; }
+	if(d == 'BA-3') { return 'Commercial'; }
+	if(d == 'BB') { return 'Commercial'; }
+	if(d == 'BB-1') { return 'Commercial'; }
+	if(d == 'BB-2') { return 'Commercial'; }
+	if(d == 'BC') { return 'Commercial'; }
+	if(d == 'BC-1') { return 'Commercial'; }
 
-	if(d == 'IA-1') { return business; }
-	if(d == 'IA-2') { return business; }
-	if(d == 'IA') { return business; }
-	if(d == 'IB-1') { return business; }
-	if(d == 'IB-2') { return business; }
-	if(d == 'IB') { return business; }
-	if(d == 'IC') { return business; }
-	if(d == 'MXD') { return business; }
-	if(d == 'ASD') { return business; }
-	if(d == 'NP') { return business; }
-	if(d == 'CRDD') { return business; }
+	if(d == 'IA-1') { return 'Business'; }
+	if(d == 'IA-2') { return 'Business'; }
+	if(d == 'IA') { return 'Business'; }
+	if(d == 'IB-1') { return 'Business'; }
+	if(d == 'IB-2') { return 'Business'; }
+	if(d == 'IB') { return 'Business'; }
+	if(d == 'IC') { return 'Business'; }
+	if(d == 'MXD') { return 'Business'; }
+	if(d == 'ASD') { return 'Business'; }
 
-	if(d == 'SD-1') { return residential; }
-	if(d == 'SD-2') { return residential; }
+	if(d == 'NP') { return 'Business'; }
+	if(d == 'CRDD') { return 'Business'; }
 
-	if(d == 'SD-3') { return business; }
-	if(d == 'SD-4') { return business; }
-	if(d == 'SD-4A') { return business; }
-	if(d == 'SD-5') { return business; }
+	if(d == 'SD-1') { return 'Residential'; }
+	if(d == 'SD-2') { return 'Residential'; }
 
-	if(d == 'SD-6') { return institution; }
+	if(d == 'SD-3') { return 'Business'; }
+	if(d == 'SD-4') { return 'Business'; }
+	if(d == 'SD-4A') { return 'Business'; }
+	if(d == 'SD-5') { return 'Business'; }
 
-	if(d == 'SD-7') { return commercial; }
+	if(d == 'SD-6') { return 'Institution'; }
 
-	if(d == 'SD-8') { return residential; }
-	if(d == 'SD-8A') { return residential; }
-	if(d == 'SD-9') { return residential; }
-	if(d == 'SD-10(F)') { return residential; }
-	if(d == 'SD-10(H)') { return residential; }
+	if(d == 'SD-7') { return 'Commercial'; }
 
-	if(d == 'SD-11') { return business; }
+	if(d == 'SD-8') { return 'Residential'; }
+	if(d == 'SD-8A') { return 'Residential'; }
+	if(d == 'SD-9') { return 'Residential'; }
+	if(d == 'SD-10(F)') { return 'Residential'; }
+	if(d == 'SD-10(H)') { return 'Residential'; }
 
-	if(d == 'SD-12') { return residential; }
-	if(d == 'SD-13') { return residential; }
-	if(d == 'SD-14') { return residential; }
-	if(d == 'SD-15') { return residential; }
+	if(d == 'SD-11') { return 'Business'; }
 
-	else { return "grey"; }
+	if(d == 'SD-12') { return 'Residential'; }
+	if(d == 'SD-13') { return 'Residential'; }
+	if(d == 'SD-14') { return 'Residential'; }
+	if(d == 'SD-15') { return 'Residential'; }
+
+	if(d == 'OS') { return 'Other'; }
+	if(d == 'AOD') { return 'Other'; }
+	if(d == 'PUD') { return 'Other'; }
+	if(d == 'MXR') { return 'Other'; }
 }
 
 
@@ -346,10 +357,12 @@ var closeTooltipD;
 function mousemoveD(e) {
   var layer = e.target;
   var id = layer.feature.properties.ZONE_TYPE;
+  var info = getZoneInfo(id);
 
   popup.setLatLng(e.latlng);
   popup.setContent(
-  	"<span style='font-weight:bold;font-size:13px'>Tract "+ id +"</span><br>"
+  	"<span style='font-weight:bold;font-size:13px'>"+ info +" area</span><br>"
+  	+"<span style='font-size:11px'>     zone type: " + id +"</span>"
   );
 
   if (!popup._map) popup.openOn(map);
@@ -378,18 +391,18 @@ function mouseoutD(e) {
 
 
 function addAge() {
-        //legend.addTo(this);
-        $( "#viz_left" ).css( "visibility", "visible");
-        $( "#viz_right" ).css( "visibility", "visible" );
-        $( "#des_age" ).css( "visibility", "visible" );	
+	//legend.addTo(this);
+    $( "#viz_left" ).css( "visibility", "visible");
+    $( "#viz_right" ).css( "visibility", "visible" );
+    $( "#des_age" ).css( "visibility", "visible" );
 }
 
 
 function hideAge() {
 // 		this.removeControl(legend);
-		$( "#viz_left" ).css( "visibility", "hidden" );
-		$( "#viz_right" ).css( "visibility", "hidden" );
-		$( "#des_age" ).css( "visibility", "hidden" );	
+	$( "#viz_left" ).css( "visibility", "hidden" );
+	$( "#viz_right" ).css( "visibility", "hidden" );
+	$( "#des_age" ).css( "visibility", "hidden" );	
 }
 
 
