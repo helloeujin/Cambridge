@@ -4,7 +4,6 @@ var southWest = L.latLng(42, -72.2),
     northEast = L.latLng(42.72, -70),
     bounds = L.latLngBounds(southWest, northEast);
 
-
 // zoom level : 10 - 18
 var map = L.map('map', {
 	minZoom: 10,
@@ -20,24 +19,20 @@ var sewer_network = L.mapbox.tileLayer('meggonagul.z7pynwmi', {
 	accessToken: L.mapbox.accessToken
 });
 
-
 var total_population;
 var zoning;
 // var sewer;
 
 var popup = new L.Popup({ autoPan: false });
 
-
 // total populcation data mapping
 var rateById = d3.map();
 var popAcrebyID = d3.map(); // population per acre
 var housingAcrebyID = d3.map(); // housing units per acre
 
-
 // age population data
 var under_18 = d3.map();
 var over_65 = d3.map()
-
 
 queue()  
 	.defer(d3.json, "tracts_2010.geojson")
@@ -113,7 +108,8 @@ function ready(error, tract, district, sewer) {
 	});
 
 	zoning = L.geoJson(district, {
-		style: getZoneStyle
+		style: getZoneStyle,
+		onEachFeature: onEachDistrict
 	});
 
 	// sewer = L.geoJson(sewer, {
@@ -260,6 +256,13 @@ function onEachFeature(feature, layer) {
 	});
 }
 
+function onEachDistrict(feature, layer) {
+	layer.on({
+		mousemove: mousemoveD,
+		mouseout: mouseoutD
+	});
+}
+
 
 var closeTooltip;
 
@@ -335,6 +338,42 @@ function mouseout(e) {
 			d3.select(this).attr("y", i*15 + 20);
 		}
 	});
+}
+
+///////////////District
+var closeTooltipD;
+
+function mousemoveD(e) {
+  var layer = e.target;
+  var id = layer.feature.properties.ZONE_TYPE;
+
+  popup.setLatLng(e.latlng);
+  popup.setContent(
+  	"<span style='font-weight:bold;font-size:13px'>Tract "+ id +"</span><br>"
+  );
+
+  if (!popup._map) popup.openOn(map);
+  window.clearTimeout(closeTooltipD);
+
+  // highlight feature
+  layer.setStyle({
+      weight: 1.2,
+      opacity: 1,
+      fillOpacity: 0.9,
+      color: "black"
+  });
+
+  if (!L.Browser.ie && !L.Browser.opera) {
+      layer.bringToFront();
+  }
+}
+
+
+function mouseoutD(e) {
+  zoning.resetStyle(e.target);
+  closeTooltipD = window.setTimeout(function() {
+      map.closePopup();
+  }, 100);
 }
 
 
