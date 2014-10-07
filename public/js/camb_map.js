@@ -8,8 +8,9 @@ var southWest = L.latLng(42, -72.2),
 var map = L.map('map', {
 	minZoom: 10,
 	maxZoom: 18,
-	maxBounds: bounds
-}).setView([42.3783903,-71.1129096-0.025], 13);
+	maxBounds: bounds,
+	zoomControl: false
+}).setView([42.3783903,-71.1129096+0.02], 13);
 
 var layers = document.getElementById('menu-ui');
 var base_layer = L.mapbox.tileLayer('examples.map-20v6611k'); // grey
@@ -59,7 +60,7 @@ function addLayer(layer, name, zIndex) {
         link.className = '';
         link.innerHTML = name;
 
-    if(layer == base_layer) {
+    if(layer == sewer_network) {
     	layer.addTo(map);
     	link.className = 'active';
     }
@@ -105,7 +106,6 @@ function addLayer(layer, name, zIndex) {
 // // add layers
 function ready(error, tract, district) {
 	console.log("data uploaded");
-	// console.log(pop);
 
 	total_population = L.geoJson(tract,  {
 		style: getStyle,
@@ -351,7 +351,7 @@ function mouseout(e) {
 	});
 }
 
-///////////////District
+/////////////// District
 var closeTooltipD;
 
 function mousemoveD(e) {
