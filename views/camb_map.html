@@ -48,7 +48,6 @@
       }
     .menu-ui a:hover {
       background:#f8f8f8;
-      /*color:#404040;*/
       }
     .menu-ui a.active {
       background:#000;
@@ -85,7 +84,6 @@
 		top: 0px;
 		width: 150px;
 		height: 100%;
-		/*background-color: rgba(0, 0, 0, 0.2);*/
 		background-color: rgba(255, 255,255,0.8);
 		z-index: 5 !important;
 		visibility: hidden;
@@ -96,7 +94,6 @@
 		top: 0px;
 		width: 150px;
 		height: 100%;
-		/*background-color: rgba(0, 0, 0, 0.2);*/
 		background-color: rgba(255, 255,255,0.8);
 		z-index: 5 !important;
 		visibility: hidden;
@@ -112,8 +109,6 @@
 	}
 	.axis text {
 	  font: 9px sans-serif;
-/*	   stroke: rgba(255,0,0,1);
-	   fill: rgba(255,0,0,1);*/
 	}
 
 	.axis path,
@@ -162,7 +157,6 @@ var layers = document.getElementById('menu-ui');
 var base_layer = L.mapbox.tileLayer('examples.map-20v6611k'); // grey
 // var base_layer = L.mapbox.tileLayer('examples.map-zswgei2n'); // color
 // var base_layer = L.mapbox.tileLayer('examples.map-zr0njcqy');
-// addLayer(base_layer, 'Base Map', 1);
 
 
 var sewer_network = L.mapbox.tileLayer('meggonagul.z7pynwmi', {
@@ -230,7 +224,6 @@ function addLayer(layer, name, zIndex) {
             		"color": "white"
             	} );
             	$("#viz_right").css( "background-color", "rgba(0, 0, 0, 0.3)" );
-            	// $("path").css("stroke", "rgba(255,255,255,0.7)");
             	$(".axis line").css("stroke", "rgba(255,255,255,0.7)");
             	$(".axis path").css("stroke", "rgba(255,255,255,0.7)");
             	$(".axis text").css("fill", "white");
@@ -369,10 +362,6 @@ function mousemove(e) {
 			
 			console.log(i);
 			d3.select(this).attr("y", i*15 + 20-4);
-			// var cy = d3.select(this).attr("y");
-			// d3.select(this).attr("y", cy - 4);
-			// console.log(cy);
-			// d3.select(this).attr("x", this.)
 		}
 	});
 
@@ -380,9 +369,6 @@ function mousemove(e) {
 		if(d.id ==  tract) {
 			d3.select(this).attr("height", 8);
 			d3.select(this).attr("y", i*15 + 20-4);
-			// var cy = d3.select(this).attr("y");
-			// d3.select(this).attr("y", cy - 4);
-			// console.log(cy);
 		}
 	});
 }
@@ -402,8 +388,6 @@ function mouseout(e) {
 		if(d.id ==  tract) {
 			d3.select(this).attr("height", 2);
 			d3.select(this).attr("y", i*15 + 20);
-			// var cy = d3.select(this).attr("y");
-			// d3.select(this).attr("y", cy + 4);
 		}
 	});
 
@@ -411,8 +395,6 @@ function mouseout(e) {
 		if(d.id ==  tract) {
 			d3.select(this).attr("height", 2);
 			d3.select(this).attr("y", i*15 + 20);
-			// var cy = d3.select(this).attr("y");
-			// d3.select(this).attr("y", cy + 4);
 		}
 	});
 }
@@ -422,10 +404,7 @@ function addAge() {
         //legend.addTo(this);
         $( "#viz_left" ).css( "visibility", "visible");
         $( "#viz_right" ).css( "visibility", "visible" );
-        $( "#des_age" ).css({ 
-        	"visibility": "visible",
-        	// "color": "white"  
-        });	
+        $( "#des_age" ).css( "visibility", "visible" );	
 }
 
 
@@ -433,10 +412,7 @@ function hideAge() {
 // 		this.removeControl(legend);
 		$( "#viz_left" ).css( "visibility", "hidden" );
 		$( "#viz_right" ).css( "visibility", "hidden" );
-		$( "#des_age" ).css({ 
-        	"visibility": "hidden",
-        	// "color": "black"  
-        });	
+		$( "#des_age" ).css( "visibility", "hidden" );	
 }
 
 
