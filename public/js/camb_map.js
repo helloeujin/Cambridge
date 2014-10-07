@@ -138,9 +138,14 @@ function getSewerStyle(feature) {
 
 // style for districts
 function getZoneStyle(feature) {
+	var id = feature.properties.ZONE_TYPE;
+	var c = getZoneColor(id);
+
 	return {
 		weight: 1,
-		color: 'rgb(0,0,255)'
+		color: 'white',
+		fillOpacity: 0.7,
+		fillColor: c
 	};
 }
 
@@ -169,6 +174,82 @@ function getColor(d) {
 	else if (d >= 5000 && d < 6000) { return "rgb(33,113,181)"; }
 	else if (d >= 6000 && d < 7000) { return "rgb(8,81,156)"; }
 	else if (d >= 7000) { return "rgb(8,48,107)"; }
+}
+
+function getZoneColor(d) {
+	var residential = "yellow";
+	var institution = "orange";
+	var business = "purple";
+	var commercial = "red";
+
+	if(d == 'A-1') { return residential; }
+	if(d == 'A-2') { return residential; }
+	if(d == 'B') { return residential; }
+	if(d == 'C') { return residential; }
+	if(d == 'C-1') { return residential; }
+	if(d == 'C-1A') { return residential; }
+	if(d == 'C-2') { return residential; }
+	if(d == 'C-2A') { return residential; }
+	if(d == 'C-2B') { return residential; }
+
+	if(d == 'C-3') { return institution; }
+	if(d == 'C-3A') { return institution; }
+	if(d == 'C-3B') { return institution; }
+
+	if(d == 'O-1') { return business; }
+	if(d == 'O-2') { return business; }
+	if(d == 'O-2A') { return business; }
+	if(d == 'O-3') { return business; }
+	if(d == 'O-3A') { return business; }
+
+	if(d == 'BA') { return commercial; }
+	if(d == 'BA-1') { return commercial; }
+	if(d == 'BA-2') { return commercial; }
+	if(d == 'BA-3') { return commercial; }
+	if(d == 'BB') { return commercial; }
+	if(d == 'BB-1') { return commercial; }
+	if(d == 'BB-2') { return commercial; }
+	if(d == 'BC') { return commercial; }
+	if(d == 'BC-1') { return commercial; }
+
+	if(d == 'IA-1') { return business; }
+	if(d == 'IA-2') { return business; }
+	if(d == 'IA') { return business; }
+	if(d == 'IB-1') { return business; }
+	if(d == 'IB-2') { return business; }
+	if(d == 'IB') { return business; }
+	if(d == 'IC') { return business; }
+	if(d == 'MXD') { return business; }
+	if(d == 'ASD') { return business; }
+	if(d == 'NP') { return business; }
+	if(d == 'CRDD') { return business; }
+
+	if(d == 'SD-1') { return residential; }
+	if(d == 'SD-2') { return residential; }
+
+	if(d == 'SD-3') { return business; }
+	if(d == 'SD-4') { return business; }
+	if(d == 'SD-4A') { return business; }
+	if(d == 'SD-5') { return business; }
+
+	if(d == 'SD-6') { return institution; }
+
+	if(d == 'SD-7') { return commercial; }
+
+	if(d == 'SD-8') { return residential; }
+	if(d == 'SD-8A') { return residential; }
+	if(d == 'SD-9') { return residential; }
+	if(d == 'SD-10(F)') { return residential; }
+	if(d == 'SD-10(H)') { return residential; }
+
+	if(d == 'SD-11') { return business; }
+
+	if(d == 'SD-12') { return residential; }
+	if(d == 'SD-13') { return residential; }
+	if(d == 'SD-14') { return residential; }
+	if(d == 'SD-15') { return residential; }
+
+	else { return "grey"; }
 }
 
 
