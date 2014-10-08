@@ -31,6 +31,11 @@ exports.map = function(req, res) {
 	res.render('camb_map.html');
 }
 
+exports.uber = function(req, res) {
+	console.log("uber page requested");
+	res.render("uber.html");
+}
+
 // exports.cambridge = function(req, res) {
 // 	console.log("cambridge map page requested");
 // 	res.render('cambridge.html');

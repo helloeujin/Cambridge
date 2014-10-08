@@ -76,6 +76,8 @@ app.get('/', routes.main);
 app.get('/map', routes.map);
 app.get('/sewer', routes.sewer);
 
+app.get('/uber', routes.uber);
+
 // app.get('/', routes.index);
 
 // //new astronaut routes

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>Uber</title>
+<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+
+<!-- <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.2/mapbox.js'></script>
+<link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.2/mapbox.css' rel='stylesheet' />
+
+<script src="http://d3js.org/d3.v3.min.js"></script> 
+<script src="http://d3js.org/queue.v1.min.js"></script> -->
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+
+<!-- <link rel="stylesheet" href="/css/camb_map.css" > -->
+</head>
+
+
+<body>
+
+<script>
+	jQuery(document).ready(function($){
+
+		//make an ajax request
+		$.ajax({
+			//define the url being called by ajax
+			type: "GET",
+			url: 'https://api.uber.com/v1/products',
+
+			parameters: {
+				'server_token': 'xDC5Y-f009YGDpBfM1GtIPOuII2oYz13Jx6ZrG8K',
+				'latitude': 37.775818,
+				'longitude': -122.418028,
+			},
+
+			//put the results
+			success: function(data) {
+				console.log(data);
+			},
+			error: function(data) {
+				console.log('request failed');
+			}
+		})
+	});
+</script>
+
+
+</body>
+</html>
