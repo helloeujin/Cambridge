@@ -12,6 +12,8 @@ var map = L.map('map', {
 	zoomControl: false
 }).setView([42.3783903,-71.1129096+0.02], 13);
 
+new L.Control.Zoom({ position: 'topright' }).addTo(map);
+
 var layers = document.getElementById('menu-ui');
 var base_layer = L.mapbox.tileLayer('examples.map-20v6611k'); // grey
 // var base_layer = L.mapbox.tileLayer('examples.map-zswgei2n'); // color

@@ -27,19 +27,19 @@
 			type: "GET",
 			url: 'https://api.uber.com/v1/products',
 
-			parameters: {
+			data: {
 				'server_token': 'xDC5Y-f009YGDpBfM1GtIPOuII2oYz13Jx6ZrG8K',
 				'latitude': 37.775818,
-				'longitude': -122.418028,
+				'longitude': -122.418028
 			},
 
-			//put the results
-			success: function(data) {
-				console.log(data);
-			},
-			error: function(data) {
-				console.log('request failed');
-			}
+			// //put the results
+			// success: function(data) {
+			// 	console.log(data);
+			// },
+			// error: function(data) {
+			// 	console.log('request failed');
+			// }
 		})
 	});
 </script>
