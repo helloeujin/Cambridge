@@ -11,7 +11,7 @@ var map = L.mapbox.map('map', {
 	minZoom: 10,
 	maxZoom: 18,
 	color: "black"
-}).setView([42.3783903,-71.1129096], 13);
+}).setView([42.3783903,-71.1129096], 14);
 
 queue() // upload data using queue 
 	// .defer(d3.json, "sewer_network.geojson")// cambridge drainage data
