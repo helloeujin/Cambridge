@@ -6,7 +6,7 @@ L.mapbox.accessToken = 'pk.eyJ1IjoibWVnZ29uYWd1bCIsImEiOiI1cFpUOE5RIn0.jooCCIM58
 // 	maxZoom: 18
 // }).setView([42.3783903,-71.1129096+0.02], 13);
 
-//  maps
+ // maps
 var map = L.mapbox.map('map', {
 	minZoom: 10,
 	maxZoom: 18,
@@ -25,6 +25,8 @@ queue() // upload data using queue
 
 function ready(error, data) {
 	console.log("sewer data uploaded");
+
+	// $('#data').html(data);
 	// console.log(data);
 
 	// layer.addTo(map);
@@ -42,13 +44,23 @@ function ready(error, data) {
 		// }
 	}).addTo(map);
 
-	// var featureLayer = L.mapbox.featureLayer(data)
-	//     // hide all markers
-	//     .setFilter(function(d) { 
-	//     	// console.log(d.properties.WATERTYPE);
-	//     	return d.properties.WATERTYPE === 'COMB'; 
-	//     })
-	//     .addTo(map);
+	var featureLayer = L.mapbox.featureLayer(data)
+	    // hide all markers
+	    .setFilter(function(d) { 
+	    	// console.log(d.properties.WATERTYPE);
+	    	if (d.properties.WATERTYPE == 'COMB') {
+	    		// $('#data').html(d);
+	    		// console.log(d);
+	    		return true;
+	    	} else {
+	    		return false;
+	    	}
+	    });
+
+	// console.log(featureLayer._geojson.features);
+	    // featureLayer.addTo(map);
+
+	    // console.log(featureLayer._geojson.features);
 
 	// map.featureLayer.setFilter(function(f) {
 	//        return f.properties['marker-symbol'] === 'fast-food';

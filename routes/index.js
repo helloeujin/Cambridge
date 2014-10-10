@@ -36,6 +36,11 @@ exports.uber = function(req, res) {
 	res.render("uber.html");
 }
 
+exports.conversion = function(req, res) {
+	console.log("conversion requested");
+	res.render("json_to_csv.html");
+}
+
 // exports.cambridge = function(req, res) {
 // 	console.log("cambridge map page requested");
 // 	res.render('cambridge.html');

@@ -1,0 +1,85 @@
+<html>
+<head>
+    <title>Demo - Covnert JSON to CSV</title>
+    <script src="http://d3js.org/d3.v3.min.js"></script> <!-- d3 -->
+	<script src="http://d3js.org/queue.v1.min.js"></script>
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.js"></script>
+    <script type="text/javascript" src="https://github.com/douglascrockford/JSON-js/raw/master/json2.js"></script>
+     
+    <script type="text/javascript">
+	    queue() // upload data using queue 
+			.defer(d3.json, "Sewers_with_Load_and_Her.json")
+			.await(ready);
+
+		        // Example
+        function ready(error, data) {
+        	console.log('data uploaded');
+        	console.log(data.features);
+
+        	items = data.features;
+         
+            // Create Object
+            // var items = [
+            //       { name: "Item 1", color: "Green", size: "X-Large" },
+            //       { name: "Item 2", color: "Green", size: "X-Large" },
+            //       { name: "Item 3", color: "Green", size: "X-Large" }];
+ 
+            // Convert Object to JSON
+            var jsonObject = JSON.stringify(items);
+                 
+            // Display JSON
+            $('#json').text(jsonObject);
+             
+            // Convert JSON to CSV & Display CSV
+            $('#csv').text(ConvertToCSV(jsonObject));
+        };
+
+        // JSON to CSV Converter
+        function ConvertToCSV(objArray) {
+            var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+            var str = '';
+ 
+            for (var i = 0; i < array.length; i++) {
+                var line = '';
+                for (var index in array[i]) {
+                    if (line != '') line += ','
+ 
+                    line += array[i][index];
+                }
+ 
+                str += line + '\r\n';
+            }
+ 
+            return str;
+        }
+         
+        // // Example
+        // $(document).ready(function () {
+         
+        //     // Create Object
+        //     var items = [
+        //           { name: "Item 1", color: "Green", size: "X-Large" },
+        //           { name: "Item 2", color: "Green", size: "X-Large" },
+        //           { name: "Item 3", color: "Green", size: "X-Large" }];
+ 
+        //     // Convert Object to JSON
+        //     var jsonObject = JSON.stringify(items);
+                 
+        //     // Display JSON
+        //     $('#json').text(jsonObject);
+             
+        //     // Convert JSON to CSV & Display CSV
+        //     $('#csv').text(ConvertToCSV(jsonObject));
+        // });
+    </script>
+</head>
+<body>
+    <h1>
+        JSON</h1>
+    <pre id="json"></pre>
+    <h1>
+        CSV</h1>
+    <pre id="csv"></pre>
+</body>
+</html>

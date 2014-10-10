@@ -77,6 +77,7 @@ app.get('/map', routes.map);
 app.get('/sewer', routes.sewer);
 
 app.get('/uber', routes.uber);
+app.get('/conversion', routes.conversion);
 
 // app.get('/', routes.index);
 
