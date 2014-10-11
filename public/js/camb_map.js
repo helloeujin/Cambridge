@@ -10,7 +10,7 @@ var map = L.map('map', {
 	maxZoom: 18,
 	maxBounds: bounds,
 	zoomControl: false
-}).setView([42.3783903,-71.1129096+0.02], 13);
+}).setView([42.3783903,-71.1129096-0.005], 15);
 
 new L.Control.Zoom({ position: 'topright' }).addTo(map);
 
