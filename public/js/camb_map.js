@@ -10,9 +10,9 @@ var map = L.map('map', {
 	maxZoom: 18,
 	maxBounds: bounds,
 	zoomControl: false
-}).setView([42.3783903,-71.1129096-0.005], 15);
+}).setView([42.3783903-0.0013,-71.1129096+0.007], 13);
 
-new L.Control.Zoom({ position: 'topright' }).addTo(map);
+// new L.Control.Zoom({ position: 'topright' }).addTo(map);
 
 var layers = document.getElementById('menu-ui');
 var base_layer = L.mapbox.tileLayer('examples.map-20v6611k'); // grey
@@ -78,6 +78,7 @@ function addLayer(layer, name, zIndex) {
             if(layer == total_population) {
             	hideAge();
             } else if(layer == base_layer) {
+            	$("h1").css("color", "#fff");
             	$("#viz_left").css("background-color", "rgba(0, 0, 0, 0.3)");
             	$("#viz_right").css( "background-color", "rgba(0, 0, 0, 0.3)" );
             	$(".axis line").css("stroke", "rgba(255,255,255,0.7)");
@@ -91,6 +92,7 @@ function addLayer(layer, name, zIndex) {
             if(layer == total_population) {
             	addAge();
             } else if(layer == base_layer) {
+            	$("h1").css("color", "#000");
             	$("#viz_left").css( "background-color", "rgba(255, 255,255,0.8)" );
             	$("#viz_right").css( "background-color", "rgba(255, 255,255,0.8)" );
             	$(".axis line").css("stroke", "#000");
