@@ -6,6 +6,10 @@ body { margin:0; padding:0; font-family: sans-serif; }
   /*background-color:rgba(0,0,0,1); */
 }
 
+/*a:hover { 
+    color: yellow !!important;
+}
+*/
 .leaflet-bar, .leaflet-control-layers {
   background-color: rgba(255,255,255,0.6);
   border-radius: 0px;
@@ -55,6 +59,18 @@ body { margin:0; padding:0; font-family: sans-serif; }
   opacity: 1;
   z-index: 20 !important;
 }
+
+pre.ui-coordinates {
+  position:absolute;
+  bottom:10px;
+  left:10px;
+  padding:5px 10px;
+  background:rgba(0,0,0,0.5);
+  color:#fff;
+  font-size:11px;
+  line-height:18px;
+  border-radius:3px;
+  }
 
 /*Menu UI*/
 .menu-ui {
