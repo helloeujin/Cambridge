@@ -41,6 +41,11 @@ exports.conversion = function(req, res) {
 	res.render("json_to_csv.html");
 }
 
+exports.openpath = function(req, res) {
+	console.log("openpath requested");
+	res.render("openpath.html");
+}
+
 // exports.cambridge = function(req, res) {
 // 	console.log("cambridge map page requested");
 // 	res.render('cambridge.html');

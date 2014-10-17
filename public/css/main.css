@@ -2,7 +2,8 @@ body { margin:0; padding:0; font-family: sans-serif; }
 #map { 
   position:absolute; top:0; bottom:0; width:100%; 
   /*background-color: #090819;*/
-  background-color: #000;
+  /*background-color: #000;*/
+  background-color: #090819;
   /*background-color:rgba(0,0,0,1); */
 }
 
@@ -29,37 +30,37 @@ body { margin:0; padding:0; font-family: sans-serif; }
   position:absolute;
   left: 50px;
   top: 40px;
-  font-weight: 500;
+  font-weight: 400;
   letter-spacing: 10px;
-  font-size: 17px;
+  font-size: 18px;
   opacity: 1;
   z-index: 20 !important;
 }
 
 .menu-1 {
-  color: #ccc;
+  color: #ddd;
   /*background-color: rgba(0,0,0,0.2);*/
   /*fill: #fff;*/
   position:absolute;
-  right: 220px;
+  right: 250px;
   top: 40px;
-  font-weight: 500;
-  letter-spacing: 6px;
-  font-size: 12px;
+  font-weight: 300;
+  letter-spacing: 4px;
+  font-size: 13px;
   opacity: 1;
   z-index: 1 !important;
 }
 
 .menu-2 {
-  color: #ccc;
+  color: #ddd;
   /*background-color: rgba(0,0,0,0.2);*/
   /*fill: #fff;*/
   position:absolute;
   right: 50px;
   top: 40px;
-  font-weight: 500;
-  letter-spacing: 6px;
-  font-size: 12px;
+  font-weight: 300;
+  letter-spacing: 4px;
+  font-size: 13px;
   opacity: 1;
   z-index: 1 !important;
 }

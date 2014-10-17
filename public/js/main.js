@@ -7,23 +7,36 @@ var southWest = L.latLng(42, -72.2),
 
 // zoom level : 10 - 18
 var map = L.map('map', {
-	minZoom: 2,
-	maxZoom: 18,
+	minZoom: 10,
+	maxZoom: 15,
 	maxBounds: bounds,
 	zoomControl: false
-}).setView([42.3783903+0.001,-71.1129096-0.028], 15);
+}).setView([42.3783903+0.001,-71.1129096-0.028], 14);
 
 // new L.Control.Zoom({ position: 'topright' }).addTo(map);
 
-var base_layer = L.mapbox.tileLayer('examples.map-20v6611k'); // grey
-// var base_layer = L.mapbox.tileLayer('examples.map-zswgei2n'); // color
+// var base_layer = L.mapbox.tileLayer('examples.map-20v6611k').addTo(map); // grey 
+// ('examples.map-zswgei2n'); // color
+// ('examples.map-20v6611k'); // grey 
+// ('examples.map-h67hf2ic'); // white
+// ('examples.map-2k9d7u0c'); // satellite
+// ('examples.map-y7l23tes'); // dark
+// ('examples.map-h68a1pf7'); // pink
+// ('examples.map-8ced9urs'); // black & white
 
-var sewer_network = L.mapbox.tileLayer('meggonagul.z7pynwmi', {
+var base_layer = L.mapbox.tileLayer('examples.map-2k9d7u0c');
+base_layer.setOpacity(0.1);
+base_layer.addTo(map);
+
+
+// blue: meggonagul.z7pynwmi
+// white: meggonagul.c1dlhaor
+var sewer_network = L.mapbox.tileLayer('meggonagul.c1dlhaor', {
 	accessToken: L.mapbox.accessToken
 });
 
+sewer_network.setOpacity(0.15);
 sewer_network.addTo(map);
-
 // base_layer.setZIndex(0).addTo(map);
 
 // Generate a GeoJSON line. You could also load GeoJSON via AJAX
@@ -60,20 +73,36 @@ var myIcon = L.icon({
     iconSize: [19, 19]
 });
 
+var polyline_options = {
+    color: 'rgba(255,255,255,0.3)',
+    // color: '#1b4c5a',
+    // opacity: 1,
+    weight: 1
+};
+
 var marker = L.marker([0,0], {icon: myIcon}).addTo(map);
+var polyline = L.polyline([], polyline_options).addTo(map);
 
 tick();
+// console.log(j);
 
 function tick() {
-    marker.setLatLng(L.latLng(
-        geojson.coordinates[j][1],
-        geojson.coordinates[j][0]));
+    var lat = geojson.coordinates[j][1];
+    var lon = geojson.coordinates[j][0];
+
+    
+    // polyline.addLatLng(L.latLng(lat, lon));
+    // marker.setLatLng(L.latLng(lat, lon));
+
+    polyline.addLatLng(L.latLng(lat, lon));
+    marker.setLatLng(L.latLng(lat, lon));
+    // console.log(j);
 
     // getTail(geojson.coordinates[j][1], geojson.coordinates[j][0]);
 
     if (++j < geojson.coordinates.length) setTimeout(tick, 2);
 
-    if(j>size) j = 0;
+    // if(j>size) j = 0;
 }
 
 

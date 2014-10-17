@@ -79,6 +79,8 @@ app.get('/sewer', routes.sewer);
 app.get('/uber', routes.uber);
 app.get('/conversion', routes.conversion);
 
+app.get('/openpath', routes.openpath);
+
 // app.get('/', routes.index);
 
 // //new astronaut routes
