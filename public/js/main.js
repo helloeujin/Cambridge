@@ -142,11 +142,9 @@ var destinations_4 = {
     ]   
 };
 
-// var start = [ destinations.coordinates[0][0], destinations.coordinates[0][1]];
-// var end = [ destinations.coordinates[1][0], destinations.coordinates[1][1]];
 
-// var delta = 0.0001;
-// var trails = buildTrails( start, end );
+// ANIMATION
+
 var trails = { 
     type: 'LineString', 
     coordinates: [ ] 
@@ -167,7 +165,7 @@ var trails_4 = {
     coordinates: [ ] 
 };
 
-var delta = 0.00003;
+var delta = 0.00004;
 
 getDestinations(destinations, trails);
 getDestinations(destinations_2, trails_2);
@@ -196,15 +194,13 @@ function buildTrails(start, end, trs) {
 
         trs.coordinates.push(start.slice());
     }
-    // console.log(trs);
-    // tick(trs);
 }
 
 /////////////////////////////////////////////////////////////////////////
 // Animating trails
 /////////////////////////////////////////////////////////////////////////
 
-var j = 0;
+// var j = 0;
 
 var myIcon = L.icon({
     iconUrl: '/img/texture.png',
@@ -219,66 +215,68 @@ var polyline_options = {
     weight: 1
 };
 
+
 var marker = L.marker([0,0], {icon: myIcon}).addTo(map);
 var polyline = L.polyline([], polyline_options).addTo(map);
-tick();
+var cnt = 0;
 
 var marker_2 = L.marker([0,0], {icon: myIcon}).addTo(map);
 var polyline_2 = L.polyline([], polyline_options).addTo(map);
-tick_2();
+var cnt_2 = 0;
 
 var marker_3 = L.marker([0,0], {icon: myIcon}).addTo(map);
 var polyline_3 = L.polyline([], polyline_options).addTo(map);
-tick_3();
+var cnt_3 = 0;
 
 var marker_4 = L.marker([0,0], {icon: myIcon}).addTo(map);
 var polyline_4 = L.polyline([], polyline_options).addTo(map);
+var cnt_4 = 0;
+
+var speed = 10;
+
+tick();
+tick_2();
+tick_3();
 tick_4();
 
 function tick() {
-    // console.log(trs);
-    var lat = trails.coordinates[j][1];
-    var lon = trails.coordinates[j][0];
+    var lat = trails.coordinates[cnt][1];
+    var lon = trails.coordinates[cnt][0];
 
     polyline.addLatLng(L.latLng(lat, lon));
     marker.setLatLng(L.latLng(lat, lon));
 
-    // getTail(geojson.coordinates[j][1], geojson.coordinates[j][0]);
-    if (++j < trails.coordinates.length) setTimeout(tick, 14);
-    // if(j == trails.coordinates.length -1 ) { 
-    //     polyline.setLatLon(L.latLng(0,0));
-    //     j = 0; 
-    // }
+    if (++cnt < trails.coordinates.length) setTimeout(tick, speed);
 }
 
 function tick_2() {
-    var lat = trails_2.coordinates[j][1];
-    var lon = trails_2.coordinates[j][0];
+    var lat = trails_2.coordinates[cnt_2][1];
+    var lon = trails_2.coordinates[cnt_2][0];
 
     polyline_2.addLatLng(L.latLng(lat, lon));
     marker_2.setLatLng(L.latLng(lat, lon));
 
-    if (++j < trails_2.coordinates.length) setTimeout(tick_2, 14);
+    if (++cnt_2 < trails_2.coordinates.length) setTimeout(tick_2, speed);
 }
 
 function tick_3() {
-    var lat = trails_3.coordinates[j][1];
-    var lon = trails_3.coordinates[j][0];
+    var lat = trails_3.coordinates[cnt_3][1];
+    var lon = trails_3.coordinates[cnt_3][0];
 
     polyline_3.addLatLng(L.latLng(lat, lon));
     marker_3.setLatLng(L.latLng(lat, lon));
 
-    if (++j < trails_3.coordinates.length) setTimeout(tick_3, 10);
+    if (++cnt_3 < trails_3.coordinates.length) setTimeout(tick_3, speed);
 }
 
 function tick_4() {
-    var lat = trails_4.coordinates[j][1];
-    var lon = trails_4.coordinates[j][0];
+    var lat = trails_4.coordinates[cnt_4][1];
+    var lon = trails_4.coordinates[cnt_4][0];
 
     polyline_4.addLatLng(L.latLng(lat, lon));
     marker_4.setLatLng(L.latLng(lat, lon));
 
-    if (++j < trails_4.coordinates.length) setTimeout(tick_4, 16);
+    if (++cnt_4 < trails_4.coordinates.length) setTimeout(tick_4, speed);
 }
 
 
