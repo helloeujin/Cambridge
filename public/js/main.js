@@ -12,7 +12,7 @@ var map = L.map('map', {
 	zoomControl: false
 }).setView([42.3783903+0.001,-71.1129096-0.028], 14);
 
-// new L.Control.Zoom({ position: 'topright' }).addTo(map);
+new L.Control.Zoom({ position: 'topright' }).addTo(map);
 
 // var base_layer = L.mapbox.tileLayer('examples.map-20v6611k').addTo(map); // grey 
 // ('examples.map-zswgei2n'); // color
@@ -113,10 +113,12 @@ var destinations_3 = {
         [ -71.14374876022337, 42.38859969692781 ],
         [ -71.14396333694458, 42.38950304986545 ],
         [ -71.14424228668213, 42.395033822086 ],
+
         [ -71.14334106445312, 42.39684032976027 ],
         [ -71.1428689956665, 42.397727717992005 ],
         [ -71.14145278930663, 42.39875770645379 ],
         [ -71.1410665512085, 42.399153851360516 ],
+
         [ -71.13909244537354, 42.40010458893289 ],
         [ -71.13789081573486, 42.40010458893289 ],
         [ -71.13630294799805, 42.400928549843314 ],
@@ -137,6 +139,69 @@ var destinations_4 = {
         [ -71.1081075668335, 42.37780600108486 ],
         [ -71.10875129699707, 42.374810064906775 ],
         [ -71.08830213546753, 42.37208348024931 ],
+        [ -71.08819484710692, 42.37211518540227 ],
+        [ -71.08718633651732, 42.376886628463524 ]
+    ]   
+};
+
+var destinations_5 = { 
+    type: 'LineString', 
+    coordinates: [ 
+        [ -71.12132549285889, 42.38798160584841 ],
+        [ -71.1194372177124, 42.38818763688444 ],
+        [ -71.11920118331909, 42.38728426501647 ],
+        [ -71.11967325210571, 42.382878159760374 ],
+        [ -71.11990928649902, 42.38056403818841 ],
+        [ -71.11997365951538, 42.38012022430427 ],
+        [ -71.12059593200684, 42.37807546981966 ],
+        [ -71.12076759338379, 42.37788525671513 ],
+        [ -71.1224627494812, 42.377378018952875 ],
+        [ -71.12272024154662, 42.377124398535294 ],
+        [ -71.12226963043213, 42.3765854517469 ],
+        [ -71.12450122833252, 42.37601479716476 ],
+        [ -71.12565994262694, 42.37626842206366 ],
+        [ -71.126389503479, 42.37468324964047 ],
+        [ -71.12647533416748, 42.374144281901934 ],
+        [ -71.1266040802002, 42.373605309538036 ],
+        [ -71.12686157226562, 42.373351673883974 ]
+    ]   
+};
+
+var destinations_6 = { 
+    type: 'LineString', 
+    coordinates: [ 
+        [ -71.13113164901733, 42.382323412361465 ],
+        [ -71.12937211990356, 42.38381329428018 ],
+        [ -71.13261222839355, 42.388583848514614 ],
+        [ -71.13278388977051, 42.39085013097515 ],
+        [ -71.1393928527832, 42.39195947018157 ],
+        [ -71.1399507522583, 42.392117945610515 ],
+        [ -71.14125967025757, 42.39279938539535 ],
+        [ -71.14415645599365, 42.393655136505984 ],
+
+        [ -71.14424228668213, 42.395033822086 ],
+
+        [ -71.14334106445312, 42.39684032976027 ],
+        [ -71.1428689956665, 42.397727717992005 ],
+        [ -71.14145278930663, 42.39875770645379 ],
+        [ -71.1410665512085, 42.399153851360516 ],
+
+
+        [ -71.13909244537354, 42.40010458893289 ],
+        [ -71.13789081573486, 42.40010458893289 ],
+        [ -71.13630294799805, 42.400928549843314 ],
+        [ -71.1344575881958, 42.40270319813126 ],
+        [ -71.13441467285156, 42.40412921841742 ]
+    ]   
+};
+
+var destinations_7 = { 
+    type: 'LineString', 
+    coordinates: [ 
+        [ -71.10471725463867, 42.36726411090043 ],
+        [ -71.09823703765869, 42.36345908443492 ],
+        [ -71.09360218048096, 42.36307856911308 ],
+        [ -71.08843088150024, 42.37206762766684 ],
         [ -71.08819484710692, 42.37211518540227 ],
         [ -71.08718633651732, 42.376886628463524 ]
     ]   
@@ -165,12 +230,30 @@ var trails_4 = {
     coordinates: [ ] 
 };
 
+var trails_5 = { 
+    type: 'LineString', 
+    coordinates: [ ] 
+};
+
+var trails_6 = { 
+    type: 'LineString', 
+    coordinates: [ ] 
+};
+
+var trails_7 = { 
+    type: 'LineString', 
+    coordinates: [ ] 
+};
+
 var delta = 0.00004;
 
 getDestinations(destinations, trails);
 getDestinations(destinations_2, trails_2);
 getDestinations(destinations_3, trails_3);
 getDestinations(destinations_4, trails_4);
+getDestinations(destinations_5, trails_5);
+getDestinations(destinations_6, trails_6);
+getDestinations(destinations_7, trails_7);
 
 function getDestinations(dns, trs) {
 
@@ -212,32 +295,54 @@ var polyline_options = {
     color: 'rgba(255,255,255,0.5)',
     // color: '#1b4c5a',
     // opacity: 1,
-    weight: 1
+    weight: 1.5
 };
 
 
 var marker = L.marker([0,0], {icon: myIcon}).addTo(map);
+marker.bindPopup('Path 1');
 var polyline = L.polyline([], polyline_options).addTo(map);
 var cnt = 0;
 
 var marker_2 = L.marker([0,0], {icon: myIcon}).addTo(map);
+marker_2.bindPopup('Path 2');
 var polyline_2 = L.polyline([], polyline_options).addTo(map);
 var cnt_2 = 0;
 
 var marker_3 = L.marker([0,0], {icon: myIcon}).addTo(map);
+marker_3.bindPopup('Path 3');
 var polyline_3 = L.polyline([], polyline_options).addTo(map);
 var cnt_3 = 0;
 
 var marker_4 = L.marker([0,0], {icon: myIcon}).addTo(map);
+marker_4.bindPopup('Path 4');
 var polyline_4 = L.polyline([], polyline_options).addTo(map);
 var cnt_4 = 0;
 
-var speed = 10;
+var marker_5 = L.marker([0,0], {icon: myIcon}).addTo(map);
+marker_5.bindPopup('Path 5');
+var polyline_5 = L.polyline([], polyline_options).addTo(map);
+var cnt_5 = 0;
+
+var marker_6 = L.marker([0,0], {icon: myIcon}).addTo(map);
+marker_6.bindPopup('Path 6');
+var polyline_6 = L.polyline([], polyline_options).addTo(map);
+var cnt_6 = 0;
+
+var marker_7 = L.marker([0,0], {icon: myIcon}).addTo(map);
+marker_7.bindPopup('Path 7');
+var polyline_7 = L.polyline([], polyline_options).addTo(map);
+var cnt_7 = 0;
+
+var speed = 2; // higher -> slower
 
 tick();
 tick_2();
 tick_3();
 tick_4();
+tick_5();
+tick_6();
+tick_7();
 
 function tick() {
     var lat = trails.coordinates[cnt][1];
@@ -277,6 +382,36 @@ function tick_4() {
     marker_4.setLatLng(L.latLng(lat, lon));
 
     if (++cnt_4 < trails_4.coordinates.length) setTimeout(tick_4, speed);
+}
+
+function tick_5() {
+    var lat = trails_5.coordinates[cnt_5][1];
+    var lon = trails_5.coordinates[cnt_5][0];
+
+    polyline_5.addLatLng(L.latLng(lat, lon));
+    marker_5.setLatLng(L.latLng(lat, lon));
+
+    if (++cnt_5 < trails_5.coordinates.length) setTimeout(tick_5, speed);
+}
+
+function tick_6() {
+    var lat = trails_6.coordinates[cnt_6][1];
+    var lon = trails_6.coordinates[cnt_6][0];
+
+    polyline_6.addLatLng(L.latLng(lat, lon));
+    marker_6.setLatLng(L.latLng(lat, lon));
+
+    if (++cnt_6 < trails_6.coordinates.length) setTimeout(tick_6, speed);
+}
+
+function tick_7() {
+    var lat = trails_7.coordinates[cnt_7][1];
+    var lon = trails_7.coordinates[cnt_7][0];
+
+    polyline_7.addLatLng(L.latLng(lat, lon));
+    marker_7.setLatLng(L.latLng(lat, lon));
+
+    if (++cnt_7 < trails_7.coordinates.length) setTimeout(tick_7, speed);
 }
 
 
